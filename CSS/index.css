@@ -1,0 +1,700 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+/* class 注释 */
+
+/*	header：顶部导航栏
+	top：顶部中间
+	menu：缩小后左侧菜单栏
+	picture1 a1 b1 c1： 图标
+	top_menu：菜单选项
+----------------------------------
+	hd：导航栏下面
+
+	nav：页面内容
+	holiday_logo：中间图片
+	word choose：中间字
+----------------------------------
+	phone：手机
+	col：手机框
+	phone 123456789：手机图片
+	phoneud：手机字
+
+	phone-dn：手机下面
+	left right：左右
+----------------------------------
+	ht-dn：底部选项
+	ht-nav：内容
+	big1：页面大时显示
+	ht-u1：每一列，一个div
+	smell1：相反
+	ht-u2：每一列，一个div
+
+	ht-du：最底下
+	ht-du-nav：内容 
+ */
+
+
+body {
+	background-color: rgb(250, 250, 250);
+}
+
+header {
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.85);
+	height: 44px;
+	display: flex;
+	/* flex 布局 */
+	justify-content: center;
+	/* justify-content 用于设置或检索弹性盒子元素在主轴（横轴）方向上的对齐方式。 */
+	flex-wrap: wrap;
+	/* flex-wrap 属性规定弹性项目是否应换行。wrap 可以换行 */
+	position: fixed;
+	z-index: 100;
+}
+
+.top {
+	width: 75%;
+}
+
+.top_menu {
+	width: 100%;
+	margin-left: 220px;
+}
+
+.top_menu a {
+	float: left;
+	display: block;
+	text-decoration: none;
+	color: rgba(173, 173, 173, 1);
+	font-size: 20px;
+	padding: 14px 3% 14px 3%;
+}
+
+header a:hover {
+	color: white;
+}
+
+.picture1 {
+	width: 5%;
+	float: left;
+	text-align: center;
+}
+
+.c1 {
+	margin-left: 10px;
+}
+
+.menu {
+	width: 44px;
+	height: 44px;
+	float: left;
+	margin-top: 14px;
+	padding-left: 10px;
+}
+
+/* 通过div 画出两哼横线 */
+.m {
+	width: 20px;
+	height: 8px;
+	border-top: 1px rgba(173, 173, 173, 1) solid;
+	border-bottom: 1px rgba(173, 173, 173, 1) solid;
+}
+
+@media screen and (max-width:1400px) {
+	.top {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+	}
+}
+
+@media screen and (max-width:960px) {
+	.top {
+		width: 100%;
+	}
+
+	.top_menu a {
+		display: none;
+	}
+
+	.a1 {
+		padding: 0 0 0 43%;
+	}
+
+	.b1 {
+		display: none;
+	}
+
+	.top {
+		display: flex;
+		justify-content：space-between；
+	}
+}
+
+@media screen and (min-width:970px) {
+	.menu {
+		display: none;
+	}
+
+}
+
+.hd {
+	width: 100%;
+	padding-top: 40px;
+	background-color: rgb(227, 65, 64);
+}
+
+.hd p {
+	text-align: center;
+	line-height: 50px;
+	font-size: 12px;
+	color: white;
+}
+
+.hd a {
+	color: white;
+	text-decoration: none;
+}
+
+.hd a:hover {
+	text-decoration: underline;
+}
+
+.nav {
+	width: 100%;
+	height: 1000px;
+}
+
+.holiday_logo {
+	padding-top: px;
+	text-align: center;
+}
+
+.word {
+	width: 100%;
+	text-align: center;
+
+}
+
+.word p {
+	margin: 0 60px;
+	font-size: 70px;
+	font-family: "bookshelf symbol 7";
+}
+
+.choose {
+	width: 100%;
+	margin-top: 48px;
+}
+
+.choose-n {
+	background-color: #006edb;
+	width: 104px;
+	height: 30px;
+	border-radius: 30px;
+	/* 圆角边 */
+	padding-top: 11px;
+	margin: 0 auto;
+}
+
+.choose a {
+	font-size: 15px;
+	color: white;
+	text-decoration: none;
+	text-align: center;
+}
+
+.choose p {
+	text-align: center;
+}
+
+.choose-n:hover {
+	background-color: #0066FF;
+}
+
+@media screen and (max-width:970px) {
+	.word p {
+		font-size: 30px;
+	}
+
+	.choose-n {
+		width: 84px;
+		height: 25px;
+		padding-top: 5px;
+	}
+}
+
+/* --------------------- */
+/* 手机图片 */
+.phone {
+	width: 100%;
+	margin-top: 30px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.col {
+	width: 400px;
+	height: 400px;
+	border-radius: 15px;
+	margin: 15px 15px;
+	background-size: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	/* 背景只现实一次 */
+	text-align: center;
+}
+
+.phone1 {
+	background-color: #ffffff;
+}
+
+.phoneud {
+	opacity: 0;
+	/* 不透明 */
+	margin-top: 60px;
+}
+
+/* 底层图片显示出来的时长 */
+.phone1:hover {
+	transition: 1.5s;
+	background-image: url(../images/1.jpg);
+	background-color: #f5f5f7;
+	background-size: 80%;
+	background-position: top;
+
+}
+/* 广告字体出现的时间 */
+.phone1:hover .phoneud {
+	transition-duration: 1s;
+	opacity: 1;
+}
+/* 表层图片出现多少秒 ，rotate旋转*/
+.phone1:hover .phone1-img {
+	transition-duration: 1s;
+	transform: rotate(30deg);
+	opacity: 0;
+}
+
+.phone2 {
+	background-color: #ffffff;
+}
+
+
+.phone2:hover {
+	transition: 2s;
+	background-image: url(../images/2.jpg);
+	background-color: #f5f5f7;
+	background-size: 80%;
+	background-position: top;
+	opacity: 1;
+}
+
+.phone2:hover .phoneud {
+	transition-duration: 5s;
+	opacity: 1;
+}
+
+.phone2:hover .phone2-img {
+	transition-duration: 1s;
+	transform: rotate(30deg);
+	opacity: 0;
+}
+
+.phone3 {
+	background-color: #ffffff;
+}
+
+.phone3:hover {
+	transition: 2s;
+	background-image: url(../images/3.jpg);
+	background-color: #ffffff;
+	background-size: 80%;
+	background-position: top;
+	opacity: 1;
+}
+
+.phone3:hover .phoneud {
+	transition-duration: 5s;
+	opacity: 1;
+}
+
+.phone3:hover .phone3-img {
+	transition-duration: 1s;
+	transform: rotate(30deg);
+	opacity: 0;
+}
+
+.phone4 {
+	background-color: #ffffff;
+}
+
+.phone4:hover {
+	transition: 2s;
+	background-image: url(../images/4.jpg);
+	background-color: #ffffff;
+	background-size: 80%;
+	background-position: top;
+	opacity: 1;
+}
+
+.phone4:hover .phoneud {
+	transition-duration: 5s;
+	opacity: 1;
+}
+
+.phone4:hover .phone4-img {
+	transition-duration: 1s;
+	transform: rotate(30deg);
+	opacity: 0;
+}
+
+
+.phone5 {
+	background-color: #ffffff;
+}
+
+.phone5:hover {
+	transition: 2s;
+	background-image: url(../images/5.jpg);
+	background-color: #ffffff;
+	background-size: 80%;
+	background-position: top;
+	opacity: 1;
+}
+
+.phone5:hover .phoneud {
+	transition-duration: 5s;
+	opacity: 1;
+}
+
+.phone5:hover .phone5-img {
+	transition-duration: 1s;
+	transform: rotate(30deg);
+	opacity: 0;
+}
+
+.phone6 {
+	background-color: #ffffff;
+
+}
+
+.phone6:hover {
+	transition: 2s;
+	background-image: url(../images/6.jpg);
+	background-color: #ffffff;
+	background-size: 80%;
+	background-position: top;
+	opacity: 1;
+}
+
+.phone6:hover .phoneud {
+	transition-duration: 5s;
+	opacity: 1;
+}
+
+.phone6:hover .phone6-img {
+	transition-duration: 1s;
+	transform: rotate(30deg);
+	opacity: 0;
+}
+
+.phone7 {
+	background-color: #ffffff;
+
+}
+
+.phone7:hover {
+	transition: 2s;
+	background-image: url(../images/product_hover_macbook__d1t61mfusqqa_large.png);
+	background-color: #ffffff;
+	background-size: 80%;
+	background-position: top;
+	opacity: 1;
+}
+
+.phone7:hover .phoneud {
+	transition-duration: 5s;
+	opacity: 1;
+}
+
+.phone7:hover .phone7-img {
+	transition-duration: 1s;
+	transform: rotate(30deg);
+	opacity: 0;
+}
+
+.phone8 {
+	background-color: #ffffff;
+
+}
+
+.phone8:hover {
+	transition: 2s;
+	background-image: url(../images/product_hover_imac__fs30md1n9ai6_large.png);
+	background-color: #ffffff;
+	background-size: 80%;
+	background-position: top;
+	opacity: 1;
+}
+
+.phone8:hover .phoneud {
+	transition-duration: 5s;
+	opacity: 1;
+}
+
+.phone8:hover .phone8-img {
+	transition-duration: 1s;
+	transform: rotate(30deg);
+	opacity: 0;
+}
+
+.phone9 {
+	background-color: #ffffff;
+
+}
+
+.phone9:hover {
+	transition: 2s;
+	background-image: url(../images/product_hover_ipadpro__lencrl4rn4yq_large.png);
+	background-color: #ffffff;
+	background-size: 80%;
+	background-position: top;
+	opacity: 1;
+}
+
+.phone9:hover .phoneud {
+	transition-duration: 5s;
+	opacity: 1;
+}
+
+.phone9:hover .phone9-img {
+	transition-duration: 1s;
+	transform: rotate(30deg);
+	opacity: 0;
+}
+
+/* --------------------- */
+
+.phone-dn {
+	/* background-color: orange; */
+	width: 100%;
+	height: 450px;
+	margin-top: 135px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.left {
+	width: 600px;
+}
+
+.left-img {
+	width: 100%;
+	text-align: center;
+	margin-top: 8px;
+}
+
+.left-nv {
+	width: 100%;
+	text-align: center;
+	margin-top: 35px;
+}
+
+.left-nv a {
+	color: #0066FF;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.left-nv a:hover {
+	text-decoration: underline;
+}
+
+.right {
+	width: 600px;
+}
+
+.right-img {
+	width: 100%;
+	text-align: center;
+}
+
+.right-nv {
+	margin-top: 15px;
+	width: 100%;
+	text-align: center;
+}
+
+.right-nv a {
+	color: #0066FF;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.right-nv a:hover {
+	text-decoration: underline;
+}
+
+/* ----------底部----------- */
+
+.ht-dn {
+	background-color: #f5f5f7;
+	width: 100%;
+	/* height: 480px; */
+	margin-top: 100px;
+}
+
+.ht-nav {
+	width: 100%;
+	display: flex;
+	flex-wrap: nowrap;
+	/* 默认不拆行或不拆列。 */
+}
+
+.ht-u1 {
+	float: left;
+}
+
+.ht-u1 ul {
+	text-align: left;
+}
+
+.ht-u1 ul li {
+	list-style-type: none;
+	margin: 5px 0;
+}
+
+.ht-u1 ul li a {
+	text-decoration: none;
+	font-size: 11px;
+	color: #424245;
+}
+
+
+.ht-u1 h3 {
+	margin-top: 15px;
+	color: #1d1d1f;
+	font-size: 11px;
+}
+
+.ht-dn a:hover {
+	text-decoration: underline;
+}
+
+@media screen and (max-width:920px) {
+
+	.big1 {
+		display: none;
+	}
+
+	.small1 {
+		display: block;
+	}
+
+}
+
+/*       !!!!!!!!!!!!分割!!!!!!!!!!      */
+.small1 {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.ht-u2 ul {
+	/* width: 90%; */
+	padding: 5px 0px;
+}
+
+.ht-u2 ul li {
+	width: 100%;
+	height: 100%;
+	list-style: none;
+	padding: 0 12px;
+	font-size: 12px;
+}
+
+.ht-u2 ul ol {
+	width: 100%;
+	height: 0;
+	overflow: hidden;
+
+}
+
+.ht-u2 ul ol li {
+	width: 100%;
+	height: 100%;
+	text-align: left;
+	padding: 5px 0px;
+}
+
+.ht-u2 ul ol li a {
+	color: gray;
+	font-size: 11px;
+	text-decoration: none;
+	padding: 5px 12px;
+}
+
+.ht-u2 ul li:hover ol {
+	height: 100%;
+}
+
+.ht-u2 ul li ol a:hover {
+	color: #000000;
+}
+
+
+@media screen and (min-width:920px) {
+
+	.big1 {
+		width: 75%;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-around;
+	}
+
+	.small1 {
+		display: none;
+	}
+
+}
+
+.small1 hr {
+	width: 100%;
+}
+
+/* --------------------- */
+
+.ht-du {
+	width: 100%;
+	margin-top: 60px;
+	padding-bottom: 30px;
+}
+
+.ht-du-nav {
+	width: 68%;
+	margin: 0 auto;
+}
+
+.ht-du-nav p {
+	margin-top: 8px;
+	margin-bottom: 8px;
+	font-size: 10px;
+	color: gray;
+	/* text-align: center; */
+}
+
+.ht-du-nav p a {
+	color: #06c;
+}
+
+@media screen and (max-width:850px) {
+	.ht-du-nav {
+		width: 100%;
+	}
+
+}
