@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>交互式 GPT-3</title>
+  <style>
+    body {
+      background-position: center;
+      flex-direction: column;
+      background-image: url('https://bkimg.cdn.bcebos.com/pic/fc1f4134970a304e954f6d38dfc8a786c8175c87');
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    input {
+      width: 80%;
+      max-width: 400px;
+      height: 40px;
+      padding: 8px;
+      font-size: 16px;
+      font-family: '楷体', 'KaiTi', cursive;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+      font-size: 16px;
+      font-family: '楷体', 'KaiTi', cursive;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #resultContainer {
+      background-color: rgba(173, 216, 230, 0.7);
+      height: 300px;
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-y: auto;
+      overflow-wrap: break-word;
+    }
+
+    @media only screen and (max-width: 600px) {
+      input, button, #resultContainer {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="resultContainer"></div>
+  <input type="text" id="promptInput" placeholder="输入提示文本" onkeypress="handleKeyPress(event)">
+  <button onclick="callGPT3()">发送</button>
+
+  <script>
+    let conversation = ''; // 用于存储对话历史的变量
+
+    async function callGPT3() {
+      const apiKey = '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';
+      const promptInput = document.getElementById('promptInput');
+      const prompt = promptInput.value.trim();
+
+      if (prompt === '') {
+        alert('请在调用 GPT-3 前输入提示文本。');
+        return;
+      }
+
+      promptInput.value = '';
+
+      const url = 'https://api.openai.com/v1/completions';
+      const payload = {
+        model: 'text-davinci-003',
+        prompt: conversation + '\n用户: ' + prompt,
+        temperature: 0.4,
+        max_tokens: 200,
+      };
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+      const generatedText = result.choices[0].text.trim();
+
+      conversation += '\n用户: ' + prompt + '\nAI: ' + generatedText;
+
+      document.getElementById('resultContainer').innerText = conversation;
+    }
+
+    function handleKeyPress(event) {
+      if (event.key === 'Enter') {
+        callGPT3();
+      }
+    }
+  </script>
+</body>
+</html>
