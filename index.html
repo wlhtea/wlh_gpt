@@ -1,118 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>wlh_gpt3</title>
-  <style>
-    body {
-      background-position: center;
-      flex-direction: column;
-      background-image: url('./海洋生物照片.png');
-      background-size: cover;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    input {
-      width: 80%;
-      max-width: 400px;
-      height: 40px;
-      padding: 8px;
-      font-size: 16px;
-      font-family: '楷体', 'KaiTi', cursive;
-      border-radius: 5px;
-      margin-bottom: 10px;
-    }
-
-    button {
-      width: 80%;
-      max-width: 400px;
-      padding: 10px;
-      font-size: 16px;
-      font-family: '楷体', 'KaiTi', cursive;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    #resultContainer {
-      background-color: rgba(173, 216, 230, 0.7);
-      height: 300px;
-      width: 80%;
-      max-width: 400px;
-      padding: 10px;
-      border-radius: 5px;
-      overflow-y: auto;
-      overflow-wrap: break-word;
-    }
-
-    @media only screen and (max-width: 600px) {
-      input, button, #resultContainer {
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wlh</title>
+    <style>
+      body {
+        background-position: center;
+        flex-direction: column;
+        background-image: url('https://bkimg.cdn.bcebos.com/pic/fc1f4134970a304e954f6d38dfc8a786c8175c87');
+        background-size: cover;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 100vh;
+      }
+      #outputContainer {
         width: 90%;
+        max-width: 400px;
+        margin-top: 20px; /* Adjust as needed for the desired space above the input container */
       }
-    }
-  </style>
-</head>
-<body>
-  <div id="resultContainer"></div>
-  <input type="text" id="promptInput" placeholder="输入提示文本" onkeypress="handleKeyPress(event)">
-  <button onclick="callGPT3()">发送</button>
-
-  <script>
-    let conversation = ''; // 用于存储对话历史的变量
-
-    async function callGPT3() {
-      const apiKey = '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';
-      const promptInput = document.getElementById('promptInput');
-      const prompt = promptInput.value.trim();
-
-      if (prompt === '') {
-        alert('请在调用 GPT-3 前输入提示文本。');
-        return;
+      #inputContainer {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10px;
+        box-sizing: border-box;
+      }
+      input {
+        width: 90%;
+        height: 40px;
+        padding: 8px;
+        font-size: 16px;
+        font-family: '楷体', 'KaiTi', cursive;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+      button {
+        width: 25%;
+        height: 60px;
+        padding: 10px;
+        font-size: 16px;
+        font-family: '楷体', 'KaiTi', cursive;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .response {
+        background-color: rgba(173, 216, 230, 0.7);
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-y: auto;
+        overflow-wrap: break-word;
+        position: relative;
+        animation: fadeIn 0.5s ease-in-out;
       }
 
-      promptInput.value = '';
-
-      const url = 'https://api.openai.com/v1/completions';
-      const payload = {
-        model: 'text-davinci-003',
-        prompt: conversation + '用户: ' + prompt,
-        temperature: 1,
-        max_tokens: 1024,
-      };
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await response.json();
-      const generatedText = result.choices[0].text.trim();
-
-      conversation += '\n用户: ' + prompt + '\nAI: ' + generatedText;
-
-      // 显示结果
-      document.getElementById('resultContainer').innerHTML = conversation;
-
-      // 滚动到底部
-      const resultContainer = document.getElementById('resultContainer');
-      resultContainer.scrollTop = resultContainer.scrollHeight;
-    }
-
-    function handleKeyPress(event) {
-      if (event.key === 'Enter') {
-        callGPT3();
+      #outputContainer {
+        width: 90%;
+        max-width: 400px;
+        margin-top: 20px;
+        overflow-y: auto; /* Add this line for vertical scrollbar */
       }
-    }
-  </script>
-</body>
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="outputContainer"></div><br>
+    <div id="inputContainer">
+      <input type="text" id="promptInput" placeholder="输入提示文本" onkeypress="handleKeyPress(event)">
+      <button onclick="callGPT3()">发送</button>
+    </div>
+
+    <script>
+      let conversationCount = 0;
+
+      async function callGPT3() {
+        const apiKey = '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';
+        const promptInput = document.getElementById('promptInput');
+        const userPrompt = promptInput.value.trim();
+
+        if (userPrompt === '') {
+          alert('请在调用 GPT-3 前输入提示文本。');
+          return;
+        }
+
+        promptInput.value = '';
+
+        const url = 'https://api.openai.com/v1/completions';
+        const payload = {
+          model: 'text-davinci-003',
+          prompt: '用户: ' + userPrompt,
+          temperature: 1,
+          max_tokens: 1024,
+        };
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+        const generatedText = result.choices[0].text.trim();
+
+        // Create a new div for each response with a unique background color
+        const outputContainer = document.getElementById('outputContainer');
+        const newResponseDiv = document.createElement('div');
+        newResponseDiv.classList.add('response');
+        newResponseDiv.style.backgroundColor = getRandomColor();
+        newResponseDiv.innerHTML = `<strong>用户:</strong> ${userPrompt}<br><strong>AI:</strong> ${generatedText}`;
+
+        // Append the new response div to the output container
+        outputContainer.appendChild(newResponseDiv);
+
+        // Increment the conversation count for unique IDs
+        conversationCount++;
+
+        // Scroll to the bottom
+        outputContainer.scrollTop = outputContainer.scrollHeight;
+      }
+
+      function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+          callGPT3();
+        }
+      }
+
+      function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+    </script>
+  </body>
 </html>
