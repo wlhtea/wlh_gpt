@@ -25,7 +25,7 @@
       overflow-y: auto;
       width: 90%;
       max-width: 400px;
-      margin-top: 20px;
+      margin-top: 100px;
       margin-bottom: 20px;
       display: flex;
       flex-direction: column;
@@ -60,6 +60,7 @@
       to { opacity: 1; }
     }
 
+
     #inputContainer {
       width: 100%;
       max-width: 500px;
@@ -68,61 +69,72 @@
       align-items: center;
       justify-content: space-between;
       background: rgba(255, 255, 255, 0.8);
-      padding: 10px;
+      padding: 15px; /* Adjusted padding for increased spacing */
       border-radius: 10px;
       box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
     }
 
-    input {
-      width: 70%;
+    input, select, button {
       height: 40px;
-      padding: 8px;
       font-size: 16px;
-      font-family: '楷体', 'KaiTi', cursive;
       border-radius: 5px;
       box-sizing: border-box;
     }
 
+    input {
+      width: 50%;
+      padding: 8px;
+      font-family: '楷体', 'KaiTi', cursive;
+    }
+
+    select {
+      width: 20%;
+    }
+
     button {
       width: 25%;
-      height: 40px;
       padding: 10px;
-      font-size: 16px;
       font-family: '楷体', 'KaiTi', cursive;
-      border-radius: 5px;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
+  
+  
   <div id="conversationContainer"></div>
   <div id="inputContainer">
     <input type="text" id="promptInput" placeholder="输入提示文本" onkeypress="handleKeyPress(event)">
+    <select id="modelSelect">
+      <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+      <option value="dall-e-3">dall-e-3</option>
+    </select>
     <button onclick="callGPT3()" class="btn glass">发送</button>
   </div>
-      <div class="stats glass text-primary-content" style="position: fixed; top: 10px; right: 50px;">
-  
-        <div class="stat">
-          <div class="stat-title">coffee bill</div>
-          <div class="stat-value">$0</div>
-          <div class="stat-actions">
-            <button class="btn btn-sm btn-success px-16" onclick="window.location.href='./paycoffee.html'">pay</button>
-          </div>
-        </div>
+  <div class="stats glass text-primary-content" style="position: fixed; top: 10px; right: 50px;">
+    <div class="stat">
+      <div class="stat-title">coffee bill</div>
+      <div class="stat-value">$0</div>
+      <div class="stat-actions">
+        <button class="btn btn-sm btn-success px-16" onclick="window.location.href='./paycoffee.html'">pay</button>
       </div>
+    </div>
+  </div>
   <script>
-    async function callGPT3() {
+
+    async function callGPT35Turbo() {
       const apiKey = 'sk-hFZFXBSQ67a4Ecf98c03T3BLbKFJc524a09adf1b4cA58995';
+      const modelSelect = document.getElementById('modelSelect');
+      const selectedModel = modelSelect.value;
       const promptInput = document.getElementById('promptInput');
       const userPrompt = promptInput.value.trim();
-
       if (userPrompt === '') {
-        alert('请在调用 GPT-3 前输入提示文本。');
+        alert('请在调用 GPT-3.5-turbo 前输入提示文本。');
         return;
       }
-
+  
       promptInput.value = '';
-
+  
       const url = 'https://aigptx.top/v1/chat/completions';
       const payload = {
         messages: [
@@ -131,16 +143,16 @@
             content: userPrompt,
           },
         ],
-        model: 'gpt-3.5-turbo',
+        model: selectedModel,
       };
-
+  
       const conversationContainer = document.getElementById('conversationContainer');
-
+  
       const loadingChat = document.createElement('div');
       loadingChat.classList.add('chat', 'chat-start');
       loadingChat.innerHTML = `<div class="chat-bubble"><button class="btn btn-square"><span class="loading loading-spinner"></span></button></div>`;
       conversationContainer.appendChild(loadingChat);
-
+  
       try {
         const response = await fetch(url, {
           method: 'POST',
@@ -150,31 +162,110 @@
           },
           body: JSON.stringify(payload),
         });
-
+  
         const result = await response.json();
         const generatedText = result.choices[0].message.content.trim();
+  
+        conversationContainer.removeChild(loadingChat);
+  
+        const userChat = document.createElement('div');
+        userChat.classList.add('chat', 'chat-start');
+        userChat.innerHTML = `<div class="chat-bubble"><strong>用户:</strong> ${userPrompt}</div>`;
+        conversationContainer.appendChild(userChat);
+  
+        const aiSentences = generatedText.split(/[.!?]/);
+  
+        aiSentences.forEach(sentence => {
+          const formattedSentence = sentence.trim();
+          if (formattedSentence !== '') {
+            const aiChat = document.createElement('div');
+            aiChat.classList.add('chat', 'chat-end');
+            aiChat.innerHTML = `<div class="chat-bubble"><strong>AI:</strong> ${formattedSentence}</div>`;
+            conversationContainer.appendChild(aiChat);
+          }
+        });
+  
+        conversationContainer.scrollTop = conversationContainer.scrollHeight;
+      } catch (error) {
+        console.error('Error fetching response:', error);
+      }
+    }
+    function generateDallE3Image() {
+        const promptInput = document.getElementById('promptInput');
+        const userPrompt = promptInput.value.trim();
+        promptInput.value = '';
+
+        const conversationContainer = document.getElementById('conversationContainer');
+        const loadingChat = document.createElement('div');
+        loadingChat.classList.add('chat', 'chat-start');
+        loadingChat.innerHTML = `<div class="chat-bubble"><button class="btn btn-square"><span class="loading loading-spinner"></span></button></div>`;
+        
+        conversationContainer.appendChild(loadingChat);
+        
+        var myHeaders = new Headers();
+        myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
+        myHeaders.append("Authorization", "Bearer sk-hFZFXBSQ67a4Ecf98c03T3BLbKFJc524a09adf1b4cA58995");
+      
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("prompt", userPrompt);
+        urlencoded.append("model", "dall-e-3");
+        urlencoded.append("n", "1");
+        urlencoded.append("quality", "hd");
+        urlencoded.append("response_format", "b64_json");
+        urlencoded.append("size", "1024x1024");
+        urlencoded.append("style", "vivid");
+      
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: urlencoded,
+          redirect: 'follow'
+        };
+  
 
         conversationContainer.removeChild(loadingChat);
+
 
         const userChat = document.createElement('div');
         userChat.classList.add('chat', 'chat-start');
         userChat.innerHTML = `<div class="chat-bubble"><strong>用户:</strong> ${userPrompt}</div>`;
         conversationContainer.appendChild(userChat);
 
-        const aiChat = document.createElement('div');
-        aiChat.classList.add('chat', 'chat-end');
-        aiChat.innerHTML = `<div class="chat-bubble"><strong>AI:</strong> ${generatedText}</div>`;
-        conversationContainer.appendChild(aiChat);
 
-        conversationContainer.scrollTop = conversationContainer.scrollHeight;
-      } catch (error) {
-        console.error('Error fetching response:', error);
+        return fetch("https://cn2us02.opapi.win/v1/images/generations", requestOptions)
+          .then(response => response.json())
+          .then(result => {
+            const imageData = result.data[0];
+            const base64Image = imageData.b64_json;
+            const revisedPrompt = imageData.revised_prompt;
+      
+            // Render the image to the conversationContainer
+            const conversationContainer = document.getElementById('conversationContainer');
+            const imageElement = document.createElement('img');
+            imageElement.src = `data:image/png;base64,${base64Image}`;
+            conversationContainer.appendChild(imageElement);
+            
+            // You can return additional data if needed
+            return {
+              base64Image,
+              revisedPrompt
+            };
+          })
+          .catch(error => {
+            console.log('Error:', error);
+            throw error; 
+          });
       }
-    }
-
     function handleKeyPress(event) {
       if (event.key === 'Enter') {
-        callGPT3();
+        const modelSelect = document.getElementById('modelSelect');
+        const selectedModel = modelSelect.value;
+  
+        if (selectedModel === 'gpt-3.5-turbo') {
+          callGPT35Turbo();
+        } else {
+          generateDallE3Image();
+        }
       }
     }
   </script>
