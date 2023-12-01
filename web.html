@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wlh</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <style>
+    body {
+      background-position: center;
+      background-image: url('./聊天背景.png');
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #conversationContainer {
+      flex: 1;
+      overflow-y: auto;
+      width: 90%;
+      max-width: 400px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .chat-bubble {
+      padding: 10px;
+      border-radius: 5px;
+      overflow-wrap: break-word;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .chat-start {
+      justify-content: flex-start;
+    }
+
+    .chat-end {
+      justify-content: flex-end;
+    }
+
+    .loading-button {
+      width: 25%;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    #inputContainer {
+      width: 100%;
+      max-width: 500px;
+      margin: 40px auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    input {
+      width: 70%;
+      height: 40px;
+      padding: 8px;
+      font-size: 16px;
+      font-family: '楷体', 'KaiTi', cursive;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 25%;
+      height: 40px;
+      padding: 10px;
+      font-size: 16px;
+      font-family: '楷体', 'KaiTi', cursive;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="conversationContainer"></div>
+  <div id="inputContainer">
+    <input type="text" id="promptInput" placeholder="输入提示文本" onkeypress="handleKeyPress(event)">
+    <button onclick="callGPT3()" class="btn glass">发送</button>
+  </div>
+      <div class="stats glass text-primary-content" style="position: fixed; top: 10px; right: 50px;">
+  
+        <div class="stat">
+          <div class="stat-title">coffee bill</div>
+          <div class="stat-value">$0</div>
+          <div class="stat-actions">
+            <button class="btn btn-sm btn-success px-16" onclick="window.location.href='./paycoffee.html'">pay</button>
+          </div>
+        </div>
+      </div>
+  <script>
+    async function callGPT3() {
+      const apiKey = 'sk-hFZFXBSQ67a4Ecf98c03T3BLbKFJc524a09adf1b4cA58995';
+      const promptInput = document.getElementById('promptInput');
+      const userPrompt = promptInput.value.trim();
+
+      if (userPrompt === '') {
+        alert('请在调用 GPT-3 前输入提示文本。');
+        return;
+      }
+
+      promptInput.value = '';
+
+      const url = 'https://aigptx.top/v1/chat/completions';
+      const payload = {
+        messages: [
+          {
+            role: 'user',
+            content: userPrompt,
+          },
+        ],
+        model: 'gpt-3.5-turbo',
+      };
+
+      const conversationContainer = document.getElementById('conversationContainer');
+
+      const loadingChat = document.createElement('div');
+      loadingChat.classList.add('chat', 'chat-start');
+      loadingChat.innerHTML = `<div class="chat-bubble"><button class="btn btn-square"><span class="loading loading-spinner"></span></button></div>`;
+      conversationContainer.appendChild(loadingChat);
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+        const generatedText = result.choices[0].message.content.trim();
+
+        conversationContainer.removeChild(loadingChat);
+
+        const userChat = document.createElement('div');
+        userChat.classList.add('chat', 'chat-start');
+        userChat.innerHTML = `<div class="chat-bubble"><strong>用户:</strong> ${userPrompt}</div>`;
+        conversationContainer.appendChild(userChat);
+
+        const aiChat = document.createElement('div');
+        aiChat.classList.add('chat', 'chat-end');
+        aiChat.innerHTML = `<div class="chat-bubble"><strong>AI:</strong> ${generatedText}</div>`;
+        conversationContainer.appendChild(aiChat);
+
+        conversationContainer.scrollTop = conversationContainer.scrollHeight;
+      } catch (error) {
+        console.error('Error fetching response:', error);
+      }
+    }
+
+    function handleKeyPress(event) {
+      if (event.key === 'Enter') {
+        callGPT3();
+      }
+    }
+  </script>
+</body>
+</html>
