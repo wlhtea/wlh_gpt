@@ -1,37 +1,26 @@
 # openai_wlh
-
-#### 介绍
-准备写一个openai界面供朋友家人使用
+超级简单的方式拥有一个自己的chatgpt网站，部署到服务器（只需要clone过去即可）
+#### api：
+1.  这是一个基于第三方openai api的网站，费用为openai的1.2倍，但是如果通过外网信用卡或银行卡租凭等，可能对于新手会比较麻烦，服务器也需要挂外网，故选择用第三方api
+2.  同时只要在[ohmygpt](https://www.ohmygpt.com?aff=BDnMSilC)获取自己的api，填写到xxx位置就好（xxx还不知道准备怎么填，如果要部署的话，准备加密还没有想好，懂的自然懂咯略略，后续会更新的）
+3.  可以来体验一下，项目地址[W-GPT](http://8.138.104.244),该项目部署在阿里云
+![输入图片说明](./阿里云信息/image.jpg)
 
 #### 软件架构
 软件架构说明
 
 
 #### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+git clone git@gitee.com:developer-father/openai_wlh.git
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  只是一个模板，随便怎么用都行，一切责任与作者无关
+2.  用于学习前端是比较合适的
+3.  不要盗用我的token！！！！求求求了，去注册一个有送，我真的没钱没钱没钱！
 
 #### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+ @yoshi111[老二](https://gitee.com/yoshi111)
 
 
-#### 特技
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
