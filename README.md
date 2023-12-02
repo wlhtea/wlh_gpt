@@ -5,7 +5,7 @@
 ## 🚀 快速上手
 
 1. **免费获取API**
-   - 我们使用第三方 OpenAI API，费用仅为 OpenAI 官方标价的1.2倍，省去了繁琐的外网信用卡或银行卡租凭步骤，方便快捷。
+   - 我们使用第三方 OpenAI API，费用仅为 OpenAI 官方标价的0.2倍（是的就是0.2不是1.2），省去了繁琐的外网信用卡或银行卡租凭步骤，方便快捷。
 
 2. **获取你的API密钥**
    - 在 [OhMyGPT](https://www.ohmygpt.com?aff=BDnMSilC) 获取你的API密钥。
