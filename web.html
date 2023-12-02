@@ -100,8 +100,6 @@
   </style>
 </head>
 <body>
-  
-  
   <div id="conversationContainer"></div>
   <div id="inputContainer">
     <input type="text" id="promptInput" placeholder="输入提示文本" onkeypress="handleKeyPress(event)">
@@ -121,8 +119,15 @@
     </div>
   </div>
   <script>
+    let isRequestInProgress = false;
 
     async function callGPT35Turbo() {
+      if (isRequestInProgress) {
+        return;
+      }
+
+      isRequestInProgress = true;
+
       const apiKey = 'sk-hFZFXBSQ67a4Ecf98c03T3BLbKFJc524a09adf1b4cA58995';
       const modelSelect = document.getElementById('modelSelect');
       const selectedModel = modelSelect.value;
@@ -130,6 +135,7 @@
       const userPrompt = promptInput.value.trim();
       if (userPrompt === '') {
         alert('请在调用 GPT-3.5-turbo 前输入提示文本。');
+        isRequestInProgress = false;
         return;
       }
   
@@ -188,9 +194,18 @@
         conversationContainer.scrollTop = conversationContainer.scrollHeight;
       } catch (error) {
         console.error('Error fetching response:', error);
+      } finally {
+        isRequestInProgress = false;
       }
     }
+
     async function generateDallE3Image() {
+      if (isRequestInProgress) {
+        return;
+      }
+
+      isRequestInProgress = true;
+
       const promptInput = document.getElementById('promptInput');
       const userPrompt = promptInput.value.trim();
       promptInput.value = '';
@@ -216,13 +231,11 @@
       urlencoded.append("style", "vivid");
 
       const requestOptions = {
-          method: 'POST',
-          headers: myHeaders,
-          body: urlencoded,
-          redirect: 'follow'
+        method: 'POST',
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: 'follow'
       };
-
-
 
       try {
         const response = await fetch("https://cn2us02.opapi.win/v1/images/generations", requestOptions);
@@ -239,15 +252,15 @@
 
         const aiChat = document.createElement('div');
         aiChat.classList.add('chat', 'chat-end');
-        
-        // Include the image in the aiChat's innerHTML
         aiChat.innerHTML = `<div class="chat-bubble"><strong>AI:</strong> <img src="data:image/png;base64,${base64Image}" alt="Generated Image"></div>`;
 
         conversationContainer.appendChild(aiChat);
       } catch (error) {
-          alert('Error:', "请不要输入敏感内容");
-          conversationContainer.removeChild(loadingChat);
-          throw error;
+        alert('Error:', "请不要输入敏感内容");
+        conversationContainer.removeChild(loadingChat);
+        throw error;
+      } finally {
+        isRequestInProgress = false;
       }
     }
 
