@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>wlh</title>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     body {
       background-position: center;
@@ -119,8 +120,11 @@
       </div>
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
+
     let isRequestInProgress = false;
+    var apiKey = 'sk-hFZFXBSQ67a4Ecf98c03T3BLbKFJc524a09adf1b4cA58995';
 
     async function callGPT35Turbo() {
       if (isRequestInProgress) {
@@ -129,7 +133,6 @@
 
       isRequestInProgress = true;
 
-      const apiKey = 'sk-hFZFXBSQ67a4Ecf98c03T3BLbKFJc524a09adf1b4cA58995';
       const modelSelect = document.getElementById('modelSelect');
       const selectedModel = modelSelect.value;
       const promptInput = document.getElementById('promptInput');
@@ -139,9 +142,9 @@
         isRequestInProgress = false;
         return;
       }
-  
+
       promptInput.value = '';
-  
+
       const url = 'https://aigptx.top/v1/chat/completions';
       const payload = {
         messages: [
@@ -152,14 +155,13 @@
         ],
         model: selectedModel,
       };
-  
+
       const conversationContainer = document.getElementById('conversationContainer');
-  
       const loadingChat = document.createElement('div');
       loadingChat.classList.add('chat', 'chat-start');
       loadingChat.innerHTML = `<div class="chat-bubble"><button class="btn btn-square"><span class="loading loading-spinner"></span></button></div>`;
       conversationContainer.appendChild(loadingChat);
-  
+
       try {
         const response = await fetch(url, {
           method: 'POST',
@@ -169,29 +171,28 @@
           },
           body: JSON.stringify(payload),
         });
-  
+
         const result = await response.json();
+        console.log(result);
         const generatedText = result.choices[0].message.content.trim();
-  
+
         conversationContainer.removeChild(loadingChat);
-  
+
         const userChat = document.createElement('div');
         userChat.classList.add('chat', 'chat-start');
         userChat.innerHTML = `<div class="chat-bubble"><strong>用户:</strong> ${userPrompt}</div>`;
         conversationContainer.appendChild(userChat);
-  
-        const aiSentences = generatedText.split(/[.!?]/);
-  
-        aiSentences.forEach(sentence => {
-          const formattedSentence = sentence.trim();
-          if (formattedSentence !== '') {
-            const aiChat = document.createElement('div');
-            aiChat.classList.add('chat', 'chat-end');
-            aiChat.innerHTML = `<div class="chat-bubble"><strong>AI:</strong> ${formattedSentence}</div>`;
-            conversationContainer.appendChild(aiChat);
-          }
-        });
-  
+
+        const aiChat = document.createElement('div');
+        aiChat.classList.add('chat', 'chat-end');
+        aiChat.innerHTML = `<div class="chat-bubble"><strong>AI:</strong></div>`;
+        conversationContainer.appendChild(aiChat);
+
+        const aiBubble = document.createElement('div');
+        aiBubble.classList.add('chat-bubble');
+        aiBubble.innerHTML = marked.parse(generatedText);
+        aiChat.appendChild(aiBubble);
+
         conversationContainer.scrollTop = conversationContainer.scrollHeight;
       } catch (error) {
         console.error('Error fetching response:', error);
@@ -199,6 +200,7 @@
         isRequestInProgress = false;
       }
     }
+
 
     async function generateDallE3Image() {
       if (isRequestInProgress) {
@@ -220,7 +222,7 @@
 
       const myHeaders = new Headers();
       myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
-      myHeaders.append("Authorization", "Bearer sk-hFZFXBSQ67a4Ecf98c03T3BLbKFJc524a09adf1b4cA58995");
+      myHeaders.append(`Authorization", "Bearer ${apiKey}`);
 
       const urlencoded = new URLSearchParams();
       urlencoded.append("prompt", userPrompt);
