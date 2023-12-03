@@ -105,6 +105,7 @@
     <input type="text" id="promptInput" placeholder="输入提示文本" onkeypress="handleKeyPress(event)">
     <select id="modelSelect">
       <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+      <option value="gpt-4">gpt-4</option>
       <option value="dall-e-3">dall-e-3</option>
     </select>
     <button type="submit" onclick="handleKeyPress(event)" class="btn glass">发送</button>
@@ -134,7 +135,7 @@
       const promptInput = document.getElementById('promptInput');
       const userPrompt = promptInput.value.trim();
       if (userPrompt === '') {
-        alert('请在调用 GPT-3.5-turbo 前输入提示文本。');
+        alert('请在调用前输入提示文本。');
         isRequestInProgress = false;
         return;
       }
@@ -270,7 +271,7 @@
         const modelSelect = document.getElementById('modelSelect');
         const selectedModel = modelSelect.value;
   
-        if (selectedModel === 'gpt-3.5-turbo') {
+        if (selectedModel === 'gpt-3.5-turbo' || selectedModel === 'gpt-4') {
           callGPT35Turbo();
         } else {
           generateDallE3Image();
