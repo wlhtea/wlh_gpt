@@ -1,9 +1,10 @@
 let isRequestInProgress = false;
 var apiKey = 'sk-hFZFXBSQ67a4Ecf98c03T3BLbKFJc524a09adf1b4cA58995';
+let conversationHistory = [];
 
 async function callGPT35Turbo() {
     if (isRequestInProgress) {
-    return;
+        return;
     }
 
     isRequestInProgress = true;
@@ -13,22 +14,20 @@ async function callGPT35Turbo() {
     const promptInput = document.getElementById('promptInput');
     const userPrompt = promptInput.value.trim();
     if (userPrompt === '') {
-    alert('请在调用前输入提示文本。');
-    isRequestInProgress = false;
-    return;
+        alert('请在调用前输入提示文本。');
+        isRequestInProgress = false;
+        return;
     }
 
     promptInput.value = '';
 
+    // 将用户输入添加到对话历史
+    conversationHistory.push({ role: 'user', content: userPrompt });
+
     const url = 'https://aigptx.top/v1/chat/completions';
     const payload = {
-    messages: [
-        {
-        role: 'user',
-        content: userPrompt,
-        },
-    ],
-    model: selectedModel,
+        messages: conversationHistory,
+        model: selectedModel,
     };
 
     const conversationContainer = document.getElementById('conversationContainer');
@@ -38,48 +37,48 @@ async function callGPT35Turbo() {
     conversationContainer.appendChild(loadingChat);
 
     try {
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify(payload),
-    });
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+            },
+            body: JSON.stringify(payload),
+        });
 
-    const result = await response.json();
-    console.log(result);
-    const generatedText = result.choices[0].message.content.trim();
+        const result = await response.json();
+        const generatedText = result.choices[0].message.content.trim();
 
-    conversationContainer.removeChild(loadingChat);
+        conversationContainer.removeChild(loadingChat);
 
-    const userChat = document.createElement('div');
-    userChat.classList.add('chat', 'chat-start');
-    userChat.innerHTML = `<div class="chat-bubble"><strong>用户:</strong> ${userPrompt}</div>`;
-    conversationContainer.appendChild(userChat);
+        const userChat = document.createElement('div');
+        userChat.classList.add('chat', 'chat-start');
+        userChat.innerHTML = `<div class="chat-bubble"><strong>用户:</strong> ${userPrompt}</div>`;
+        conversationContainer.appendChild(userChat);
 
-    const aiChat = document.createElement('div');
-    aiChat.classList.add('chat', 'chat-end');
-    aiChat.innerHTML = `<div class="chat-bubble"><strong>AI:</strong></div>`;
-    conversationContainer.appendChild(aiChat);
+        const aiChat = document.createElement('div');
+        aiChat.classList.add('chat', 'chat-end');
+        aiChat.innerHTML = `<div class="chat-bubble"><strong>AI:</strong></div>`;
+        conversationContainer.appendChild(aiChat);
 
-    const aiBubble = document.createElement('div');
-    aiBubble.classList.add('chat-bubble');
-    aiBubble.innerHTML = marked.parse(generatedText);
-    aiChat.appendChild(aiBubble);
+        const aiBubble = document.createElement('div');
+        aiBubble.classList.add('chat-bubble');
+        aiBubble.innerHTML = marked.parse(generatedText);
+        aiChat.appendChild(aiBubble);
 
-    conversationContainer.scrollTop = conversationContainer.scrollHeight;
+        conversationContainer.scrollTop = conversationContainer.scrollHeight;
     } catch (error) {
-    console.error('Error fetching response:', error);
+        console.error('Error fetching response:', error);
     } finally {
-    isRequestInProgress = false;
+        isRequestInProgress = false;
     }
 }
 
 
+
 async function generateDallE3Image() {
     if (isRequestInProgress) {
-    return;
+        return;
     }
 
     isRequestInProgress = true;
@@ -87,6 +86,9 @@ async function generateDallE3Image() {
     const promptInput = document.getElementById('promptInput');
     const userPrompt = promptInput.value.trim();
     promptInput.value = '';
+
+    // 将用户输入添加到对话历史
+    conversationHistory.push({ role: 'user', content: userPrompt });
 
     const conversationContainer = document.getElementById('conversationContainer');
     const loadingChat = document.createElement('div');
@@ -97,7 +99,7 @@ async function generateDallE3Image() {
 
     const myHeaders = new Headers();
     myHeaders.append("User-Agent", "Apifox/1.0.0 (https://apifox.com)");
-    myHeaders.append(`Authorization", "Bearer ${apiKey}`);
+    myHeaders.append("Authorization", `Bearer ${apiKey}`);
 
     const urlencoded = new URLSearchParams();
     urlencoded.append("prompt", userPrompt);
@@ -109,38 +111,39 @@ async function generateDallE3Image() {
     urlencoded.append("style", "vivid");
 
     const requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: urlencoded,
-    redirect: 'follow'
+        method: 'POST',
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: 'follow'
     };
 
     try {
-    const response = await fetch("https://cn2us02.opapi.win/v1/images/generations", requestOptions);
-    const result = await response.json();
-    const imageData = result.data[0];
-    const base64Image = imageData.b64_json;
-    const revisedPrompt = imageData.revised_prompt;
-    conversationContainer.removeChild(loadingChat);
+        const response = await fetch("https://cn2us02.opapi.win/v1/images/generations", requestOptions);
+        const result = await response.json();
+        const imageData = result.data[0];
+        const base64Image = imageData.b64_json;
+        const revisedPrompt = imageData.revised_prompt;
+        conversationContainer.removeChild(loadingChat);
 
-    const userChat = document.createElement('div');
-    userChat.classList.add('chat', 'chat-start');
-    userChat.innerHTML = `<div class="chat-bubble"><strong>用户:</strong> ${userPrompt}</div>`;
-    conversationContainer.appendChild(userChat);
+        const userChat = document.createElement('div');
+        userChat.classList.add('chat', 'chat-start');
+        userChat.innerHTML = `<div class="chat-bubble"><strong>用户:</strong> ${userPrompt}</div>`;
+        conversationContainer.appendChild(userChat);
 
-    const aiChat = document.createElement('div');
-    aiChat.classList.add('chat', 'chat-end');
-    aiChat.innerHTML = `<div class="chat-bubble"><strong>AI:</strong> <img src="data:image/png;base64,${base64Image}" alt="Generated Image"></div>`;
+        const aiChat = document.createElement('div');
+        aiChat.classList.add('chat', 'chat-end');
+        aiChat.innerHTML = `<div class="chat-bubble"><strong>AI:</strong> <img src="data:image/png;base64,${base64Image}" alt="Generated Image"></div>`;
 
-    conversationContainer.appendChild(aiChat);
+        conversationContainer.appendChild(aiChat);
     } catch (error) {
-    alert('Error:', "请不要输入敏感内容");
-    conversationContainer.removeChild(loadingChat);
-    throw error;
+        alert('Error:', "请不要输入敏感内容");
+        conversationContainer.removeChild(loadingChat);
+        throw error;
     } finally {
-    isRequestInProgress = false;
+        isRequestInProgress = false;
     }
 }
+
 
 function handleKeyPress(event) {
     console.log(event.type);
