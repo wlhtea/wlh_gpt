@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>wlh</title>
   <link href="css/all.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
   <div id="conversationContainer"></div>
@@ -14,28 +15,17 @@
       <input type="checkbox" id="myCheckbox" class="checkbox checkbox-success" />
     </label>
   </div>
+    
   <div id="inputContainer">
     <input type="text" id="promptInput" placeholder="输入提示文本" onkeypress="handleKeyPress(event)">
     <select id="modelSelect">
       <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-      <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
       <option value="gpt-4">gpt-4</option>
       <option value="dall-e-3">dall-e-3</option>
-      <option value="gpt-4-all">gpt-4-all</option>
     </select>
     <button type="submit" onclick="handleKeyPress(event)" class="btn glass">发送</button>
   </div>
-  <div class="stats glass text-primary-content" style="position: fixed; top: 10px; right: 50px;">
-    <div class="stat">
-      <div class="stat-title">coffee bill</div>
-      <div class="stat-value">$0</div>
-      <div class="stat-actions">
-        <button class="btn btn-sm btn-success px-16" onclick="window.location.href='./paycoffee.html'">pay</button>
-      </div>
-    </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script type="text/javascript" src="./marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>

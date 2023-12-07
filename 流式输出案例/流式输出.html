@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <style>
+        #chatWindow {
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div id="chatWindow"></div>
+
+<script>
+function startChat() {
+    const output = document.getElementById('chatWindow');
+    const eventSource = new EventSource('http://localhost:5000/chat?user_input=Hello');
+
+    eventSource.addEventListener('message', function(event) {
+        console.log(event.data);
+        const content = event.data;
+        if(content === '{"done": true}'){
+            console.log('end');
+        } else {
+            updateChatWindow(content);
+        }
+    });
+
+    eventSource.addEventListener('error', function(error) {
+        console.error('连接错误:', error);
+        eventSource.close();
+    });
+}
+
+function updateChatWindow(content) {
+    const chatWindow = document.getElementById('chatWindow');
+    let messageElement = chatWindow.querySelector('p');
+
+    // 如果不存在 <p> 元素，则创建一个
+    if (!messageElement) {
+        messageElement = document.createElement('p');
+        chatWindow.appendChild(messageElement);
+    }
+
+    messageElement.innerHTML += content.replace(/"/g, '');  // 在现有内容后追加新内容
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+startChat();
+
+
+</script>
+
+</body>
+</html>
