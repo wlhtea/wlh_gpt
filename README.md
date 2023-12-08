@@ -46,6 +46,10 @@
 详尽的软件架构说明，让你更深入了解项目的构建和设计。帮我美化一下这段 markdown 文件，添加部署标题，内容如下：
 
 ## 🚀 项目部署
+【Flask项目部署（阿里云服务器Ubantu操作系统）】
+```bash
+https://www.bilibili.com/video/BV1kX4y1N7u9?vd_source=86128f0caacbd1f48d8ba64b076f5197
+```
 
 在 git 上运行以下命令进行项目克隆：
 
