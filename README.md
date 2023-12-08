@@ -64,3 +64,10 @@ pip install -r requirements.txt
 ```bash
 python openai_flask.py --port 3000
 ```
+
+
+
+-------现在不会搞这个python flask api在服务器运行每次只能请求本地---------
+- 有会的朋友可以给我提供一些帮助吗？wx:13549957404
+- 目前只能在本地运行python文件后分文本网站
+- 要考四级了很急 先复习去 后面有空再搞了
