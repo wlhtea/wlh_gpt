@@ -85,6 +85,7 @@ async function makeOpenAIRequest(model, messages) {
     }
 }
 
+
 function handleKeyPress(event) {
     if (event.key === 'Enter' || event.type === 'click') {
         const modelSelect = document.getElementById('modelSelect');
