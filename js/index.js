@@ -13,15 +13,15 @@ let center_to_out = ''
 function updateChatWindow(content, id) {
     console.log(content);
     const existingDiv = document.getElementById(id);
-    center_to_out += content.replace(/"/g, '').toString();
-    let push_origin = center_to_out.toString();
+    center_to_out += content.replace(/"/g, '');
+    let push_origin = center_to_out;
     if (existingDiv) {
-        existingDiv.innerHTML = marked.parse(push_origin);
+        existingDiv.innerHTML = (push_origin).replace(/\\n/g, "<br/>").replace(/ /g, "&nbsp;");
         chatWindow.scrollTop = chatWindow.scrollHeight;
     } else {
         const userChat = document.createElement('div');
         userChat.classList.add('chat', 'chat-end');
-        userChat.innerHTML = `<div class="chat-bubble" id=${count}><strong>AI:</strong> ${marked.parse(push_origin)}</div>`;
+        userChat.innerHTML = `<div class="chat-bubble" id=${count}><strong>AI:</strong> ${push_origin}</div>`;
         const conversationContainer = document.getElementById('conversationContainer');
         conversationContainer.appendChild(userChat);
     }
@@ -61,8 +61,8 @@ async function makeOpenAIRequest(model, messages) {
                 tempDiv.innerHTML = myDivContent;
                 var pContent = tempDiv.getElementsByTagName('p')[0].innerHTML;
                 // 将字符串中的 \\n 替换为 <br/>，空白部分用 &nbsp; 代替
-                codeStr = pContent.replace(/\\n/g, "<br/>").replace(/\s+/g, "&nbsp;");
-                document.getElementById(count).innerHTML = codeStr;
+                codeStr = pContent.replace(/\\n/g, "<br/>").replace(/ /g, "&nbsp;");
+                document.getElementById(count).innerHTML = marked.prase(codeStr);
                 // myDivContent = marked.parse(pContent);
                 console.log('end');
             } else {
