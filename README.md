@@ -35,7 +35,7 @@
    - 未完成
 
 4. **后端**
-   - 部分
+   - flask api --> 流式输出
 
 ## 🌐 项目体验
 
@@ -59,15 +59,8 @@ git clone https://gitee.com/developer-father/openai_wlh.git
 pip install -r requirements.txt
 ```
 
-最后，在 shell 中运行 openai_flask.py 文件，指定端口号（默认为 3000）：
+最后，在 shell 中运行 openai_flask.py 文件，指定端口号（默认为 5000）：
 
 ```bash
-python openai_flask.py --port 3000
+python openai_flask.py
 ```
-
-
-
--------现在不会搞这个python flask api在服务器运行每次只能请求本地---------
-- 有会的朋友可以给我提供一些帮助吗？wx:13549957404
-- 目前只能在本地运行python文件后分文本网站
-- 要考四级了很急 先复习去 后面有空再搞了

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" id="ad3127ea-7bf4-40dd-8460-5449e7b1b2da" port="22" customName="openai_flask" nameFormat="CUSTOM" username="root" useOpenSSHConfig="true">
+        <option name="customName" value="openai_flask" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>

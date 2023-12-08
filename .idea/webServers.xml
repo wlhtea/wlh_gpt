@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="d29dea27-1556-406e-9331-6abafe650f39" name="openai_flask" url="http://http://8.138.104.244/">
+        <fileTransfer rootFolder="" accessType="SFTP" port="22" sshConfigId="ad3127ea-7bf4-40dd-8460-5449e7b1b2da" sshConfig="openai_flask">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" isUseSudo="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
