@@ -47,23 +47,22 @@ async function makeOpenAIRequest(model, messages) {
     loadingChat.setAttribute('id', 'loading');
     loadingChat.innerHTML = `<div class="chat-bubble"><strong>AI</strong><br/><button class="btn btn-square"><span class="loading loading-spinner"></span></button></div>`;
     conversationContainer.appendChild(loadingChat);
-
     try {
         const encodedMessages = encodeURIComponent(JSON.stringify(messages));
         const encodedModel = encodeURIComponent(model);
 
-        const eventSource = new EventSource(`http://localhost:5000/chat?messages=${encodedMessages}&model=${encodedModel}`);
+        const eventSource = new EventSource(`http://8.138.104.244:5000/chat?messages=${encodedMessages}&model=${encodedModel}`);
         eventSource.addEventListener('message', function(event) {
             const content = event.data;
             if (content === '{"done": true}') {
-                var myDivContent = document.getElementById(count).innerHTML;
-                var tempDiv = document.createElement('div');
-                tempDiv.innerHTML = myDivContent;
-                var pContent = tempDiv.getElementsByTagName('p')[0].innerHTML;
-                // 将字符串中的 \\n 替换为 <br/>，空白部分用 &nbsp; 代替
-                codeStr = pContent.replace(/\\n/g, "<br/>").replace(/ /g, "&nbsp;");
-                document.getElementById(count).innerHTML = marked.prase(codeStr);
-                // myDivContent = marked.parse(pContent);
+                // var myDivContent = document.getElementById(count).innerHTML;
+                // var tempDiv = document.createElement('div');
+                // tempDiv.innerHTML = myDivContent;
+                // var pContent = tempDiv.getElementsByTagName('p')[0].innerHTML;
+                // // 将字符串中的 \\n 替换为 <br/>，空白部分用 &nbsp; 代替
+                // codeStr = pContent.replace(/\\n/g, "<br/>").replace(/ /g, "&nbsp;");
+                // document.getElementById(count).innerHTML = marked.prase(codeStr);
+                // // myDivContent = marked.parse(pContent);
                 console.log('end');
             } else {
                 const existingLoadingChat = document.getElementById('loading');
@@ -94,11 +93,20 @@ function handleKeyPress(event) {
         const userPrompt = promptInput.value.trim();
         conversationHistory.push({ role: 'user', content: userPrompt });
         promptInput.value = '';
-        if (selectedModel === 'gpt-3.5-turbo' || selectedModel === 'gpt-4') {
-            makeOpenAIRequest(selectedModel, conversationHistory);
-            count += 1;
+        if (selectedModel == 'dall-e-3') {
+            // makeOpenAIRequest(selectedModel, conversationHistory);
+            // count += 1;
+            showAlert('厚米 求你别搞我！！');
         } else {
-            makeOpenAIRequest('dall-e-3', conversationHistory);
+            let net_ = "";
+            var checkbox = document.getElementById('myCheckbox');
+            if (checkbox.checked) {
+                net_ = "net-";
+            } else {
+                net_ = net_;
+            }
+            let result_model = net_.concat("", selectedModel);
+            makeOpenAIRequest(result_model, conversationHistory);
             count += 1;
         }
     }
