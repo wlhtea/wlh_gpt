@@ -4,11 +4,13 @@ let conversationHistory = [{'role': 'system', 'content': '你是一个无所不�
 var count = 0;
 let center_to_out = ''
 const options = {
-    gfm: true
+    gfm: true,
+    smartypants: true,
+    smartLists: true
   };
 function updateChatWindow(content, id) {
     const existingDiv = document.getElementById(id);
-    center_to_out += content.replace(/^"|"$/g, '');
+    center_to_out += content.replace(/^"|"$/g, '').replace(/\\"/g,'"');
     // let push_origin = center_to_out;
     if (existingDiv) {
         existingDiv.innerHTML = `<pre>${marked.parse(center_to_out.replace(/\\n/g, '\n'),options)}</pre>`;//.replace(/\\n/g, "<br/>").replace(/ /g, "&nbsp;")
@@ -50,8 +52,7 @@ async function makeOpenAIRequest(model, messages) {
         eventSource.addEventListener('message', function(event) {
             const content = event.data;
             if (content === '{"done": true}') {
-                // end_to_ = document.getElementById(`${count}`);
-                // end_to_.innerHTML = `<pre>${marked.parse(center_to_out.replace(/\\n/g, '\n'))}</pre>`
+                conversationHistory.push({ role: 'assistant', content: center_to_out});
                 console.log('end');
             } else {
                 const existingLoadingChat = document.getElementById('loading');
