@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>wlh</title>
   <link href="css/all.css" rel="stylesheet" type="text/css" />
+  <link href="./highlight.js/styles/github-dark.min.css" rel="stylesheet">
 </head>
 <body>
   <div id="conversationContainer"></div>
@@ -15,7 +16,7 @@
     </label>
   </div>
   <div id="inputContainer">
-    <input type="text" id="promptInput" placeholder="输入提示文本（暂时关闭图像生成）" onkeypress="handleKeyPress(event)">
+    <input type="text" id="promptInput" placeholder="暂时关闭图像生成 考四级后再搞" onkeypress="handleKeyPress(event)">
     <select id="modelSelect">
       <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
       <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
@@ -41,7 +42,9 @@
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script type="text/javascript" src="./marked/marked.min.js"></script>
   <script type="text/javascript" src="js/index.js"></script>
+  <script>hljs.highlightAll();</script>
 </body>
 </html>

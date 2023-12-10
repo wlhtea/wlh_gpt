@@ -39,8 +39,18 @@ body {
   justify-content: flex-start;
 }
 
+pre {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
 .chat-end {
   justify-content: flex-end;
+  white-space: pre-line;
+}
+
+.chat-bubble{
+  white-space: pre-line;
 }
 
 .loading-button {
