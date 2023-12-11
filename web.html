@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ch">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>wlh</title>
   <link href="css/all.css" rel="stylesheet" type="text/css" />
-  <link href="./highlight.js/styles/github-dark.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism.css" integrity="sha256-c3gtD2gTzYcpkE9O9hVc98r1B8TZcF38uGG92OnDSwI=" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/prism.js" integrity="sha256-bN9ofl+4RS9yXtfZcG1sWozGCa1tuQnMULWmGzXCEBc=" crossorigin="anonymous"></script>
 </head>
 <body>
   <div id="conversationContainer"></div>
   <div class="form-control">
     <label class="cursor-pointer label">
-      <span id = "text-online" class="label-text">online&nbsp;&nbsp;</span>
+      <span id = "text-online" class="label-text">online&nbsp;</span>
       <input type="checkbox" id="myCheckbox" class="checkbox checkbox-success" />
+      <span id = "text-online" class="label-text">&nbsp;&nbsp;Translate&nbsp;</span>
+      <input type="checkbox" id="myCheckboxfy" class="checkbox checkbox-success" />
     </label>
   </div>
   <div id="inputContainer">
@@ -32,7 +38,7 @@
     </select>
     <button type="submit" onclick="handleKeyPress(event)" class="btn glass">发送</button>
   </div>
-  <div class="stats glass text-primary-content" style="position: fixed; top: 10px; right: 50px;">
+  <!-- <div class="stats glass text-primary-content" style="position: fixed; top: 10px; right: 50px;">
     <div class="stat">
       <div class="stat-title">coffee bill</div>
       <div class="stat-value">$0</div>
@@ -40,7 +46,8 @@
         <button class="btn btn-sm btn-success px-16" onclick="window.location.href='./paycoffee.html'">pay</button>
       </div>
     </div>
-  </div>
+  </div> -->
+  <div class="toast-container" id="toastContainer"></div>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script type="text/javascript" src="./marked/marked.min.js"></script>
