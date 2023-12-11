@@ -7,9 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>wlh</title>
-  <link href="css/all.css" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism.css" integrity="sha256-c3gtD2gTzYcpkE9O9hVc98r1B8TZcF38uGG92OnDSwI=" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/prism.js" integrity="sha256-bN9ofl+4RS9yXtfZcG1sWozGCa1tuQnMULWmGzXCEBc=" crossorigin="anonymous"></script>
+  <link href="css/all 1.2.0.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
   <div id="conversationContainer"></div>
@@ -22,7 +20,7 @@
     </label>
   </div>
   <div id="inputContainer">
-    <input type="text" id="promptInput" placeholder="暂时关闭图像生成 考四级后再搞" onkeypress="handleKeyPress(event)">
+    <textarea type="text" id="promptInput" placeholder="暂时关闭图像生成 考四级后再搞" onkeypress="handleKeyPress(event)"></textarea>
     <select id="modelSelect">
       <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
       <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
@@ -51,7 +49,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script type="text/javascript" src="./marked/marked.min.js"></script>
-  <script type="text/javascript" src="js/index.js"></script>
+  <script type="text/javascript" src="js/index 1.2.0.js"></script>
   <script>hljs.highlightAll();</script>
 </body>
 </html>

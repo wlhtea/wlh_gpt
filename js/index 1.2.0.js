@@ -1,4 +1,5 @@
 let isRequestInProgress = false;
+var hight_value = 30;
 let chatWindow = document.getElementById("conversationContainer");
 let conversationHistory = [{'role': 'system', 'content': '你是一个无所不能的帮手' }];
 var count = 0;
@@ -104,7 +105,8 @@ async function makeOpenAIRequest(model, messages) {
 
 
 function handleKeyPress(event) {
-    if (event.key === 'Enter' || event.type === 'click') {
+    console.log(input_values_id.scrollHeight);
+    if ((event.key === 'Enter' && !event.shiftKey) || event.type === 'click' ) {
         const modelSelect = document.getElementById('modelSelect');
         const selectedModel = modelSelect.value;
         const promptInput = document.getElementById('promptInput');
@@ -120,8 +122,18 @@ function handleKeyPress(event) {
             makeOpenAIRequest(result_model, conversationHistory);
             count += 1;
         }
-    }
+    }else{
+        input_values_id.style.height = 'auto';
+        input_values_id.style.height = `${input_values_id.scrollHeight-26}px`;
+      }
 }
+
+
+var input_values_id = document.getElementById("promptInput");
+input_values_id.addEventListener('change',handleKeyPress);
+input_values_id.addEventListener('input',handleKeyPress)
+
+
 var myCheckboxfy = document.getElementById('myCheckboxfy');
 myCheckboxfy.addEventListener('change', transale);
 function transale(){

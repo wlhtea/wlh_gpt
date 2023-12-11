@@ -65,7 +65,7 @@ pre {
 
 #inputContainer {
   width: 100%;
-  max-width: 500px;
+  max-width: 800px;
   margin: 40px auto;
   display: flex;
   align-items: center;
@@ -76,18 +76,32 @@ pre {
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 }
 
-input, select, button {
-  height: 40px;
+select, button {
+  height: 50px;
   font-size: 16px;
   border-radius: 5px;
   box-sizing: border-box;
 }
 
-input {
+textarea {
+  height: 50px; /* Adjust the height if needed */
+  max-height: 200px;
+  font-size: 20px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  resize: none;
+  overflow: hidden;
   width: 50%;
   padding: 8px;
   font-family: '楷体', 'KaiTi', cursive;
 }
+
+/* input:before {
+  content: '\a'; /* 插入换行符 */
+  /* white-space: pre-wrap; 保留空白和换行 */
+  /* visibility: hidden;
+  height: 0; */
+/* } */ */
 
 select {
   width: 20%;
