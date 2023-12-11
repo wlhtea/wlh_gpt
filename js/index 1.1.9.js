@@ -76,6 +76,18 @@ async function makeOpenAIRequest(model, messages) {
     try {
         const encodedMessages = encodeURIComponent(JSON.stringify(messages));
         const encodedModel = encodeURIComponent(model);
+        let net_ = "";
+        var checkbox = document.getElementById('myCheckbox');
+        checkbox.addEventListener('change', checked_to);
+        function checked_to(){
+            if (checkbox.checked) {
+                showAlert(true,'开启联网模式');
+                net_ = "net-";
+                result_model = net_.concat("", result_model);
+            } else {
+                net_ = '';
+            }
+        }
 
         const eventSource = new EventSource(`http://8.138.104.244:5000/chat?messages=${encodedMessages}&model=${encodedModel}`);
         eventSource.addEventListener('message', function(event) {
@@ -144,16 +156,4 @@ function transale(){
         conversationHistory = [{'role': 'system', 'content': '你是一个无所不能的帮手' }];
     }
 }
-let net_ = "";
-let result_model = 'gpt-3.5-turbo';
-var checkbox = document.getElementById('myCheckbox');
-checkbox.addEventListener('change', checked_to);
-function checked_to(){
-    if (checkbox.checked) {
-        showAlert(true,'开启联网模式');
-        net_ = "net-";
-    } else {
-        net_ = net_;
-    }
-    result_model = net_.concat("", result_model);
-}
+
