@@ -10,6 +10,32 @@ const options = {
     smartLists: true
   };
 
+function uploadPDF() {
+    var pdfInput = document.getElementById('pdfInput');
+    var file = pdfInput.files[0];
+
+    if (!file) {
+        alert('请选择一个PDF文件');
+        return;
+    }
+    var formData = new FormData();
+    formData.append('file', file);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://127.0.0.1:5000/extract_text', true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            conversationHistory.push({ role: 'user', content: response.result})
+        } else {
+            showAlert(false,`上传失败${error}`);
+        }
+    };
+    xhr.onerror = function () {
+        console.error('请求出错');
+    };
+    xhr.send(formData);
+}
+
 function showAlert(isSuccess, message) {
     var toastContainer = document.getElementById('toastContainer');
     toastContainer.innerHTML = '';
@@ -127,6 +153,7 @@ function handleKeyPress(event) {
             showAlert(false, '请输入内容后再发送！');
             return;
         }
+        uploadPDF()
         conversationHistory.push({ role: 'user', content: userPrompt });
         promptInput.value = '';
         chatWindow.scrollTop = chatWindow.scrollHeight;

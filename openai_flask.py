@@ -4,7 +4,8 @@ import requests
 import json
 import os
 from flask_cors import CORS
-from time import sleep
+import fitz
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -39,9 +40,6 @@ def gpt_chat_interface(messages, model):
                     yield f'data: {json.dumps(content, ensure_ascii=False)}\n\n'
     yield 'data: {"done": true}\n\n'
 
-
-from flask import jsonify
-
 @app.route('/chat', methods=['GET', 'POST', 'OPTIONS'])
 def chat_sse():
     if request.method == 'OPTIONS':
@@ -55,14 +53,50 @@ def chat_sse():
         messages = request.args.get('messages', '')  # Assuming messages is a JSON-formatted string
         model = request.args.get('model', '')
         conversationHistory = json.loads(messages)
-        print(messages)
-        print(model)
         return Response(gpt_chat_interface(conversationHistory, model), content_type='text/event-stream; charset=utf-8',
                         headers={'Access-Control-Allow-Origin': '*'})
     else:
         # Handle other cases
         return jsonify({"error": "Method Not Allowed", "message": "Use POST or GET method for this endpoint"}), 405
 
+def extract_text_from_pdf(pdf_path):
+    try:
+        # 打开PDF文件
+        pdf_document = fitz.open(pdf_path)
+
+        # 遍历每一页
+        extracted_text = ""
+        for page_number in range(pdf_document.page_count):
+            page = pdf_document[page_number]
+
+            # 提取文本
+            text = page.get_text()
+
+            # 拼接提取到的文本
+            extracted_text += f"Page {page_number + 1}:\n{text}\n{'=' * 30}\n"
+        return extracted_text
+
+    except Exception as e:
+        return f"Error: {e}"
+
+    finally:
+        # 关闭PDF文件
+        if pdf_document:
+            pdf_document.close()
+
+
+@app.route('/extract_text', methods=['POST'])
+def extract_text():
+    try:
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(r"C:\Users\Lenovo\OneDrive\桌面\wlh_gpt\dataPDF", filename)
+        file.save(file_path)
+        extracted_text = extract_text_from_pdf(file_path)
+        return jsonify({'result': extracted_text})
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0',debug=True, port=5000)

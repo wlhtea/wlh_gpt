@@ -20,7 +20,7 @@ function uploadPDF() {
     var formData = new FormData();
     formData.append('file', file);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://8.138.104.244:5000/extract_text');
+    xhr.open('POST', 'http://127.0.0.1:5000/extract_text');
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
