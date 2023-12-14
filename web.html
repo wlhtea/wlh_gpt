@@ -9,6 +9,12 @@
   <title>wlh</title>
   <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
   <link href="css/all 1.2.0.css" rel="stylesheet" type="text/css" />
+  <!-- 代码渲染 -->
+  <link rel="stylesheet" href="./highlight.js/styles/a11y-dark.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script>
+  <!-- 数学公式渲染 -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
   <div id="conversationContainer"></div>
@@ -48,10 +54,16 @@
     </div>
   </div> -->
   <div class="toast-container" id="toastContainer"></div>
+  
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <!-- <script type="text/javascript" src="./highlight.js/es/common.js"></script> -->
   <script type="text/javascript" src="./marked/marked.min.js"></script>
-  <script type="text/javascript" src="js/index 1.2.6.js"></script>
-  <script>hljs.highlightAll();</script>
+  <script type="text/javascript" src="js/index 1.2.7.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/highlight.min.js"></script>
+  <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script> -->
 </body>
 </html>

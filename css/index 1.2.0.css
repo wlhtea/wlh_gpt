@@ -107,6 +107,11 @@ select {
 width: 20%;
 }
 
+body {
+  font-family: Arial, sans-serif; /* 设置字体 */
+  line-height: 1.0; /* 设置行间距 */
+}
+
 button {
 width: 25%;
 padding: 10px;

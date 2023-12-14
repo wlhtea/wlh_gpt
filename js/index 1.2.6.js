@@ -7,8 +7,8 @@ var count = 0;
 let center_to_out = ''
 const options = {
     gfm: true,
-    smartypants: true,
-    smartLists: true
+    // smartypants: true,
+    // smartLists: true
   };
 
 function displayFileName() {
@@ -88,6 +88,7 @@ function updateChatWindow(content, id) {
     // let push_origin = center_to_out;
     if (existingDiv) {
         existingDiv.innerHTML = `<pre>${marked.parse(center_to_out.replace(/\\n/g, '\n').replace(/\n\n\n/g, '\n'),options)}</pre>`;//.replace(/\\n/g, "<br/>").replace(/ /g, "&nbsp;")
+        hljs.highlightAll();
         chatWindow.scrollTop = chatWindow.scrollHeight;
     } else {
         const userChat = document.createElement('div');
@@ -139,6 +140,20 @@ async function makeOpenAIRequest(model, messages) {
             const content = event.data;
             if (content === '{"done": true}') {
                 conversationHistory.push({ role: 'assistant', content: center_to_out});
+                // 获取id为"count"的div元素
+                var countDiv = document.getElementById(count);
+
+                // 获取div中的所有pre标签
+                var preTags = countDiv.getElementsByTagName("pre");
+
+                // 遍历所有pre标签并替换为div标签
+                for (var i = 0; i < preTags.length; i++) {
+                    var preTag = preTags[i];
+                    var divTag = document.createElement("div");
+                    divTag.innerHTML = preTag.innerHTML;
+                    countDiv.replaceChild(divTag, preTag);
+                }
+                MathJax.typeset()
                 console.log('end');
             } else {
                 const existingLoadingChat = document.getElementById('loading');
@@ -209,3 +224,27 @@ function transale(){
     }
 }
 
+
+// // 第一次加载时进行 MathJax 初始化
+// $.getScript("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML", function() {
+//     MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+// });
+
+// // 在每次 PJAX 完成后触发 MathJax 渲染
+// $(document).on('pjax:complete', function () {
+//     // 延迟触发 MathJax 渲染
+//     setTimeout(function () {
+//         // 在动态更新后手动触发 MathJax 渲染
+//         MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+//     }, 500); // 延迟 500 毫秒，根据需要调整
+// });
+
+MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
