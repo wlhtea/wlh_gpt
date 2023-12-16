@@ -10,16 +10,12 @@
    - ![翻译示例](images/翻译.png)
    - 使用gpt-3.5-turbo-16k模型进行翻译：
      - ![翻译16k示例](images/翻译16k.png)
-
 3. 🌐 **联网功能online**
    - ![联网功能示例](images/联网.png)
-
 4. 🗣 **上下文对话**
    - ![上下文对话示例](images/上下文.png)
-
 5. 📤 **pdf上传**
    - ![文档分析](images/文档分析.png)
-
 6. 💻 **代码公式显示**
    - ![代码显示](images/代码.png)
    - ![公式显示](images/公式.png)
@@ -64,25 +60,35 @@
 详尽的软件架构说明，让你更深入了解项目的构建和设计。帮我美化一下这段 markdown 文件，添加部署标题，内容如下：
 
 ## 🚀 项目部署
+
 【Flask项目部署（阿里云服务器Ubantu操作系统）】
-```bash
+
+```sh
 https://www.bilibili.com/video/BV1kX4y1N7u9?vd_source=86128f0caacbd1f48d8ba64b076f5197
 ```
 
 在 git 上运行以下命令进行项目克隆：
 
-```bash
+```sh
 git clone https://gitee.com/developer-father/openai_wlh.git
 ```
 
 然后在 openai_wlh 目录运行以下命令安装所需依赖：
 
-```bash
+```sh
 pip install -r requirements.txt
 ```
 
 最后，在 shell 中运行 openai_flask.py 文件，指定端口号（默认为 5000）：
 
-```bash
+```sh
 python openai_flask.py
 ```
+
+---
+
+**我知道这个网站还有很多漏洞，包括apikey保护，网站稳定性，美观性，后端可视化... 可能现在的我还无法完成，但是我会努力的去做好这个项目，因为：**
+
+可能没有很多人会在意这个无比小的项目，但是她会，那我也会继续努力更新迭代下去，这也是我做这个项目的初衷
+
+<img src="./images/mm.jpg" alt="mm.jpg" style="zoom:40%;" />

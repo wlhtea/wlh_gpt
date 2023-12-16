@@ -19,7 +19,8 @@
 <body>
   <div id="conversationContainer"></div>
   <div id='add_contribute' class="form-control">
-    <input type="file" id="pdfInput" accept=".pdf" class="file-input file-input-bordered file-input-sm w-full max-w-xs" />
+    <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt" class="file-input file-input-bordered file-input-sm w-full max-w-xs" onchange="handleFileUpload(event)" />
+    <!-- <button id="uploadButton" class="btn" style="margin-left: 10px;">上传文件</button> -->
     <label class="cursor-pointer label">
       <span id = "text-online" class="label-text">online&nbsp;</span>
       <input type="checkbox" id="myCheckbox" class="checkbox checkbox-success" />
@@ -33,14 +34,15 @@
       <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
       <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
       <option value="gpt-4">gpt-4</option>
-      <option value="gpt-4-1106-preview">gpt-4-1106-preview</option>
+      <option value="gpt-4-v">gpt-4-v</option>
+      <option value="gpt-4-dalle">gpt-4-dalle</option>
+      <option value="gpt-4-all">gpt-4-all</option>
       <option value="gpt-4-32k">gpt-4-32k</option>
       <option value="code-llama-34b">code-llama-34b</option>
       <option value="code-llama-13b">code-llama-13b</option>
       <option value="llama-2-70b">llama-2-70b</option>
       <option value="llama-2-13b">llama-2-13b</option>
       <!-- <option value="dall-e-3">dall-e-3</option> -->
-      <!-- <option value="gpt-4-all">gpt-4-all</option> -->
     </select>
     <button type="submit" onclick="handleKeyPress(event)" class="btn glass">发送</button>
   </div>

@@ -1,29 +1,33 @@
 let isRequestInProgress = false;
 var hight_value = 30;
+
+// 窗口默认底部
 let chatWindow = document.getElementById("conversationContainer");
+chatWindow.scrollTop = 0;
+
 let conversationHistory = [{'role': 'system', 'content': '你是一个无所不能的帮手' }];
 var exist_pdf = '';
 var count = 0;
 let center_to_out = ''
+
+const chatBubbleClasses = [
+    "chat-bubble-secondary",
+    "chat-bubble-primary",
+    "chat-bubble-accent",
+    "chat-bubble-info",
+    "chat-bubble-success",
+    "chat-bubble-warning",
+    "chat-bubble-error"
+];
+
 const options = {
     gfm: true,
     // smartypants: true,
     // smartLists: true
   };
 
-function displayFileName() {
-    var fileInput = document.getElementById('pdfInput');
-    var file = fileInput.files[0];
-    try{
-        return file.name;
-    }catch{
-        return '';
-    }
-    
-}
-
 function uploadPDF() {
-    var pdfInput = document.getElementById('pdfInput');
+    var pdfInput = document.getElementById('fileInput');
     var file = pdfInput.files[0];
     if (!file) {
         return;
@@ -88,8 +92,11 @@ function updateChatWindow(content, id) {
     // let push_origin = center_to_out;
     if (existingDiv) {
         existingDiv.innerHTML = `<pre>${marked.parse(center_to_out.replace(/\\n/g, '\n').replace(/\n\n\n/g, '\n'),options)}</pre>`;//.replace(/\\n/g, "<br/>").replace(/ /g, "&nbsp;")
+        var element = document.getElementById('count');
+        if (element) {
+          element.classList.add('mockup-code');
+        }
         hljs.highlightAll();
-        chatWindow.scrollTop = chatWindow.scrollHeight;
     } else {
         const userChat = document.createElement('div');
         userChat.classList.add('chat', 'chat-end');
@@ -107,17 +114,19 @@ async function makeOpenAIRequest(model, messages) {
         return;
     }
 
+    const randomClass = chatBubbleClasses[Math.floor(Math.random() * chatBubbleClasses.length)];
+
     isRequestInProgress = true;
     const conversationContainer = document.getElementById('conversationContainer');
     const userChat = document.createElement('div');
     userChat.classList.add('chat', 'chat-start');
-    userChat.innerHTML = `<div class="chat-bubble"><strong>用户:</strong> ${messages[messages.length-1].content}</div>`;
+    userChat.innerHTML = `<div class="chat-bubble ${randomClass}">${messages[messages.length-1].content}</div>`;
     conversationContainer.appendChild(userChat);
 
     const loadingChat = document.createElement('div');
     loadingChat.classList.add('chat', 'chat-end');
     loadingChat.setAttribute('id', 'loading');
-    loadingChat.innerHTML = `<div class="chat-bubble"><strong>AI</strong><br/><button class="btn btn-square"><span class="loading loading-spinner"></span></button></div>`;
+    loadingChat.innerHTML = `<div class="chat-bubble"><button class="btn btn-square"><span class="loading loading-spinner"></span></button></div>`;
     conversationContainer.appendChild(loadingChat);
     try {
         let net_ = "";
@@ -225,3 +234,27 @@ function transale(){
         conversationHistory = [{'role': 'system', 'content': '你是一个无所不能的帮手' }];
     }
 }
+
+function displayFileName() {
+    var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files[0];
+    try{
+        return file.name;
+    }catch{
+        return '';
+    }
+    
+}
+
+function handleFileUpload(event) {
+    // 获取上传的文件
+    var uploadedFile = event.target.files[0];
+  
+    // 检查是否有文件上传
+    if (uploadedFile) {
+       if (file.type === 'application/pdf') {
+        // 调用处理PDF文件的函数
+        uploadPDF();
+    }
+    }
+  }

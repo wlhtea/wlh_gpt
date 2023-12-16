@@ -16,18 +16,18 @@ body {
   }
   
   #conversationContainer {
-  flex: 1;
-  overflow-y: auto;
-  width: 1000px;
-  max-width: 800px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
+    flex: 1;
+    overflow-y: auto;
+    width: 1000px;
+    max-width: 80%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
   }
   
-  .chat {
+  /* .chat {
   display: flex;
   margin-bottom: 10px;
   }
@@ -41,21 +41,21 @@ body {
   
   .chat-start {
   justify-content: flex-start;
-  }
+  } */
   
   pre {
   word-wrap: break-word;
   white-space: pre-wrap;
   }
   
-  .chat-end {
+  /* .chat-end {
   justify-content: flex-end;
   white-space: pre-line;
   }
   
   .chat-bubble{
   white-space: pre-line;
-  }
+  } */
   
   .loading-button {
   width: 25%;
@@ -159,34 +159,35 @@ body {
   border-radius: 5px;
   margin-bottom: 10px;
   }
+
   .alert-success {
-  background-color: #28a745;
+    background-color: #28a745;
   }
   .alert-info {
-  background-color: #17a2b8;
+    background-color: #17a2b8;
   }
   
   .fade-out {
-  animation: fadeOut 2s ease-out 1s forwards;
+    animation: fadeOut 2s ease-out 1s forwards;
   }
   
   
   .form-control {
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  padding: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    padding: 10px;
   }
   
   .label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   
   .label-text {
-  font-weight: bold;
-  font-size: 1.2em;
-  color: aliceblue;
+    font-weight: bold;
+    font-size: 1.2em;
+    color: aliceblue;
   }
   
   .checkbox {
@@ -204,25 +205,30 @@ body {
   border-color: #65cc52;
   }
 strong {
-    font-size: 1.2em; 
+  color: #aed9e4; /* 这是一种绿色，你可以根据需要选择其他颜色 */
+  font-size: 1.2em; 
 }
     
 body {
   font-family: Arial, sans-serif; 
   line-height: 1.5; 
 }
+p{
+      margin-top: 10px; 
+    margin-bottom: 20px; 
+}
 
 ul {
-    margin-top: 0px; 
-    margin-bottom: 0px; 
+    margin-top: 1px; 
+    margin-bottom: 2px; 
 }
 li{
-    margin-top: 0px; 
-    margin-bottom: 0px; 
+    margin-top: 10px; 
+    margin-bottom: 10px; 
 }
 ol{
-    margin-top: 0; 
-    margin-bottom: 0; 
+    margin-top: 1; 
+    margin-bottom: 1; 
 }
 
 /* // 美化滚动条 */ 
@@ -252,4 +258,34 @@ ol{
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(56, 140, 177, 0.3);
+}
+
+/* 通过ID选择器为按钮应用样式 */
+#uploadButton {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid #3498db; /* 边框颜色 */
+  color: #3498db; /* 文字颜色 */
+  background-color: #fff; /* 背景颜色 */
+  border-radius: 5px; /* 圆角 */
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* 过渡效果 */
+}
+
+/* 鼠标悬停时的样式 */
+#uploadButton:hover {
+  background-color: #3498db;
+  color: #fff;
+  border-color: #fff;
+}
+
+/* 激活（点击）时的样式 */
+#uploadButton:active {
+  background-color: #2980b9;
+  color: #fff;
+  border-color: #2980b9;
 }
