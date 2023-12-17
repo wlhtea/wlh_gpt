@@ -14,7 +14,7 @@ CORS(app, supports_credentials=True)
 
 def gpt_chat_interface(messages, model):
     headers = {
-        'Authorization': f'Bearer {os.environ["OPENAI_API_KEY"]}'
+        'Authorization': f'Bearer sk-Uj9OiPP8J76LTMak04bOFQpaWrnahTb29qtVw4GdplMwrRmu'
     }
 
     # Prepare the data for the POST request
@@ -36,7 +36,6 @@ def gpt_chat_interface(messages, model):
                     data_str = decoded_line.replace('data: ', '')
                     data_json = json.loads(data_str)
                     content = data_json['choices'][0]['delta'].get('content', '')
-                    hh = data_json['choices'][0]['finish_reason']
                     if content == '':
                         continue
                     yield f'data: {json.dumps(content, ensure_ascii=False)}\n\n'
@@ -118,11 +117,12 @@ def extract_text_from_pdf(pdf_path):
             pdf_document.close()
 
 def handle_file(file_path):
+    print(file_path.lower())
     if file_path.lower().endswith('.pdf'):
         return extract_text_from_pdf(file_path)
     elif file_path.lower().endswith(('.doc', '.docx')):
         return read_word_file(file_path)
-    elif file_path.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+    elif file_path.lower().endswith(('png', 'jpg', 'jpeg', 'gif')):
         return read_image_to_base64(file_path)
     else:
         return '不支持的文件类型'
@@ -135,7 +135,8 @@ def extract_text():
         file_path = os.path.join(r"./pdf", filename)
         file.save(file_path)
         extracted_text = handle_file(file_path)
-        return jsonify({'result': extracted_text})
+        print(f'这是{filename}文件内容:',str(extracted_text))
+        return jsonify({'result': f'这是{filename}文件内容:'+str(extracted_text)})
 
     except Exception as e:
         return jsonify({'error': str(e)})

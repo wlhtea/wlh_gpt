@@ -50,14 +50,14 @@ function uploadPDF() {
     xhr.send(formData);
 }
 
-async function handleUpload() {
-    try {
-        const response = await uploadPDF();
-        console.log('成功！服务器响应：', response);
-    } catch (error) {
-        console.error('上传失败：', error);
-    }
-}
+// async function handleUpload() {
+//     try {
+//         const response = await uploadPDF();
+//         console.log('成功！服务器响应：', response);
+//     } catch (error) {
+//         console.error('上传失败：', error);
+//     }
+// }
 
 
 function showAlert(isSuccess, message) {
@@ -189,7 +189,7 @@ async function makeOpenAIRequest(model, messages) {
 function handleKeyPress(event) {
     if ((event.key === 'Enter' && !event.shiftKey) || event.type === 'click' ) {
         if (displayFileName() != exist_pdf){
-            handleUpload();
+            uploadPDF();
             exist_pdf = displayFileName();
         }
         event.preventDefault();
@@ -252,9 +252,6 @@ function handleFileUpload(event) {
   
     // 检查是否有文件上传
     if (uploadedFile) {
-       if (file.type === 'application/pdf') {
-        // 调用处理PDF文件的函数
         uploadPDF();
-    }
     }
   }
