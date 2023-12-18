@@ -42,7 +42,7 @@
    - 通过第三方 OpenAI API，费用仅为 OpenAI 官方标价的 0.2 倍（不同模型价格不同，但已经低于官网价格）。
    - 无需繁琐的外网信用卡或银行卡认证，简单快捷。
 2. **获取你的 API 密钥**
-   - 在 [OhMyGPT](https://www.ohmygpt.com?aff=BDnMSilC) 获取你的 API 密钥。
+   - 在 [GODGPT](https://gptgod.online/#/register?invite_code=1m3granfgvvffu4kflueotdiv) 获取你的 API 密钥。
    - 密钥嵌入项目的详细操作方法将提供，无需担心。
 3. **流式输出**
    - 完成配置后即可使用。
