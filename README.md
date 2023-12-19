@@ -1,4 +1,5 @@
 # 💎 OpenAI_WLH ✨
+![CSDN 数据](https://stats.justsong.cn/api/csdn?id=暴风雨544)
 
 欢迎来到 **openai_wlh**，这是一个独特的项目，使你能在博客上展现个性化的 ChatGPT 功能。它不仅操作简单，还可以轻松地在你的服务器上进行部署。
 
