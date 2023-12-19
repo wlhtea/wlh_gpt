@@ -1,6 +1,6 @@
 let isRequestInProgress = false;
 var hight_value = 30;
-
+var open_start = 0;
 // 窗口默认底部
 let chatWindow = document.getElementById("conversationContainer");
 chatWindow.scrollTop = 0;
@@ -9,7 +9,8 @@ let conversationHistory = [{'role': 'system', 'content': '你是一个无所不�
 var exist_pdf = '';
 var count = 0;
 let center_to_out = ''
-
+var url_base = 'http://8.138.104.244';
+// var url_base = 'http://127.0.0.1'
 const chatBubbleClasses = [
     "chat-bubble-secondary",
     "chat-bubble-primary",
@@ -35,7 +36,7 @@ function uploadPDF() {
     var formData = new FormData();
     formData.append('file', file);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://127.0.0.1:5000/extract_text');
+    xhr.open('POST', `${url_base}:5000/extract_text`);
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
@@ -144,18 +145,13 @@ async function makeOpenAIRequest(model, messages) {
         const encodedMessages = encodeURIComponent(JSON.stringify(messages));
         const encodedModel = encodeURIComponent(model);
 
-        const eventSource = new EventSource(`http://127.0.0.1:5000/chat?messages=${encodedMessages}&model=${encodedModel}`);
+        const eventSource = new EventSource(`${url_base}:5000/chat?messages=${encodedMessages}&model=${encodedModel}`);
         eventSource.addEventListener('message', function(event) {
             const content = event.data;
             if (content === '{"done": true}') {
                 conversationHistory.push({ role: 'assistant', content: center_to_out});
-                // 获取id为"count"的div元素
                 var countDiv = document.getElementById(count);
-
-                // 获取div中的所有pre标签
                 var preTags = countDiv.getElementsByTagName("pre");
-
-                // 遍历所有pre标签并替换为div标签
                 for (var i = 0; i < preTags.length; i++) {
                     var preTag = preTags[i];
                     var divTag = document.createElement("div");
@@ -189,6 +185,7 @@ async function makeOpenAIRequest(model, messages) {
 function handleKeyPress(event) {
     if ((event.key === 'Enter' && !event.shiftKey) || event.type === 'click' ) {
         event.preventDefault();
+        hljs.highlightAll();
         const modelSelect = document.getElementById('modelSelect');
         const selectedModel = modelSelect.value;
         const promptInput = document.getElementById('promptInput');
@@ -207,11 +204,10 @@ function handleKeyPress(event) {
             makeOpenAIRequest(selectedModel, conversationHistory);
             count += 1;
         }
-    }else{
-        var input_values_id = document.getElementById("promptInput");
-        input_values_id.style.height = 'auto';
-        input_values_id.style.height = `${input_values_id.scrollHeight-26}px`;
-      }
+    }
+    var input_values_id = document.getElementById("promptInput");
+    input_values_id.style.height = 'auto';
+    input_values_id.style.height = `${input_values_id.scrollHeight-16}px`;
 }
 
 

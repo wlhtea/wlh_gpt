@@ -6,18 +6,24 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>wlh</title>
+  <title>W-GPT</title>
   <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
-  <link href="css/all 1.2.0.css" rel="stylesheet" type="text/css" />
+  <link href="css/all 1.2.1.css" rel="stylesheet" type="text/css" />
   <!-- 代码渲染 -->
   <link rel="stylesheet" href="./highlight.js/styles/a11y-dark.css">
-  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script>
+  <!-- <script src="https://unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script> -->
   <!-- 数学公式渲染 -->
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
+  <ul class="menu bg-base-200 w-56">
+    <li><a href="./index.html">home</a></li>
+    <li><a class="active">chat</a></li>
+    <li><a href="./readme.html">readme</a></li>
+  </ul>
   <div id="conversationContainer"></div>
+
   <div id='add_contribute' class="form-control">
     <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt" class="file-input file-input-bordered file-input-sm w-full max-w-xs" onchange="handleFileUpload(event)" />
     <!-- <button id="uploadButton" class="btn" style="margin-left: 10px;">上传文件</button> -->
@@ -34,9 +40,10 @@
       <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
       <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
       <option value="gpt-4">gpt-4</option>
-      <option value="gpt-4-v">gpt-4-v</option>
-      <option value="gpt-4-dalle">gpt-4-dalle</option>
-      <option value="gpt-4-all">gpt-4-all</option>
+      <option value="gemini-pro">gemini-pro</option>
+      <!-- <option value="gpt-4-v">gpt-4-v</option> -->
+      <!-- <option value="gpt-4-dalle">gpt-4-dalle</option> -->
+      <!-- <option value="gpt-4-all">gpt-4-all</option> -->
       <option value="gpt-4-32k">gpt-4-32k</option>
       <option value="code-llama-34b">code-llama-34b</option>
       <option value="code-llama-13b">code-llama-13b</option>

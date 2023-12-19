@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .img-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 80%;
+            max-height: 80vh; /* 80% of the viewport height */
+            overflow-y: auto; /* Show a scrollbar if the content is taller than the max-height */
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {top: -300px; opacity: 0} 
+            to {top: 0; opacity: 1}
+        }
+
+        @keyframes animatetop {
+            from {top: -300px; opacity: 0}
+            to {top: 0; opacity: 1}
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .modal-body {padding: 2px 16px;}
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        }
+
+        table, th, td {
+        border: 1px solid black;
+        padding: 15px;
+        text-align: left;
+        }
+
+        table tr:nth-child(even) {
+        background-color: #eee;
+        }
+
+        table tr:nth-child(odd) {
+        background-color: #fff;
+        }
+
+        table th {
+        background-color: black;
+        color: white;
+        }
+        nav {
+          background-color: #4a5568;
+          padding: 1rem;
+        }
+
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: space-around;
+        }
+
+        li {
+          margin: 0;
+        }
+
+        a {
+          text-decoration: none;
+          color: #ffffff;
+          font-weight: bold;
+          transition: color 0.3s ease-in-out;
+        }
+
+        a:hover {
+          color: #fbd38d;
+        }
+
+        .active {
+          color: #fbd38d;
+        }
+        
+    </style>
+    
+    <!-- <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.20/dist/full.min.css" rel="stylesheet" type="text/css" /> -->
+</head>
+<body>
+  <nav class="menu bg-base-200 w-56">
+    <ul>
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./web.html">Chat</a></li>
+      <li><a class="active">Readme</a></li>
+    </ul>
+  </nav>
+
+<!-- <div id="myModal" class="modal"> -->
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>W-GPT</h2>
+    </div>
+    <div class="modal-body">
+      <p>这个项目是由东软大三学生开发的一个免费的gpt网站，没钱省着用</p>
+      <a href="https://gitee.com/developer-father/openai_wlh">开源地址 有兴趣可以一起开发这个项目</a>
+      <p>建议首选 <strong style="color: rgb(165, 100, 100);">gemini-pro</strong></p>
+      
+      <p>以下是模型的各大评分，gemini-pro也是一个超越3.5接近4.0的版本，而且现在是免费的，别的模型本帅都要支付一笔费用</p>
+      <strong style="color: rgb(169, 66, 66); font-size: 20px;">虽然免费，不要滥用</strong>
+      <!-- <table>
+        <tr>
+          <th>模型名称</th>
+          <th>模型描述</th> 
+          <th>token最大限制</th>
+          <th>计费类型</th>
+          <th>价格</th>
+        </tr>
+        <tr>
+          <td>gpt-3.5-turbo</td>
+          <td>openai速度最快的模型</td> 
+          <td>5000</td>
+          <td>次数</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>gpt-3.5-turbo-16k</td>
+          <td>GPT3.5的高容量版本，适合大规模文本处理</td>
+          <td>16000</td>
+          <td>次数</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>gpt-4</td>
+          <td>高级人工智能模型，提供更复杂的语言理解和生成能力</td>
+          <td>8000</td>
+          <td>次数</td>
+          <td>750</td>
+        </tr>
+        <tr>
+          <td>gpt-4-32k</td>
+          <td>专注于处理大量数据的GPT4模型版本，适用于高负载任务</td>
+          <td>32000</td>
+          <td>次数</td>
+          <td>1200</td>
+        </tr>
+        <tr>
+          <td>gemini-pro</td>
+          <td>高级人工智能模型，提供更复杂的语言理解和生成能力</td>
+          <td>8000</td>
+          <td>次数</td>
+          <td>100</td>
+        </tr>
+        <tr>
+          <td>code-llama-34b</td>
+          <td>专为编程和代码分析设计的Llama模型，具有高级代码理解能力</td>
+          <td>34000</td>
+          <td>次数</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>code-llama-13b</td>
+          <td>Llama模型的编程专用版，适合处理中等复杂度的编程任务</td>
+          <td>13000</td>
+          <td>次数</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>llama-2-70b</td>
+          <td>高容量的Llama模型，适合复杂的分析和预测任务</td>
+          <td>70000</td>
+          <td>次数</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>llama-2-13b</td>
+          <td>中等容量的Llama模型，平衡了性能和成本性能和灵活性，适合多种不同的应用场景</td>
+          <td>13000</td>
+          <td>次数</td>
+          <td>10</td>
+        </tr> -->
+      <!-- </table> -->
+      <table>
+        <tr>
+          <th>模型名称</th>
+          <th>参数大小</th>
+          <th>MMLU平均分</th>
+          <th>CEval平均分</th>
+          <th>AGIEval平均分</th>
+          <th>GSM8K平均分</th>
+          <th>发布者</th>
+          <th>开源情况</th>
+          <th>模型地址</th>
+        </tr>
+        <tr>
+          <td>GPT-3</td>
+          <td>1750.0</td>
+          <td>53.9</td>
+          <td>/</td>
+          <td>/</td>
+          <td>/</td>
+          <td>OpenAI</td>
+          <td></td>
+          <td><a href="#">GPT-3模型地址</a></td>
+        </tr>
+        <tr>
+          <td>GPT-3.5</td>
+          <td>1750.0</td>
+          <td>70.0</td>
+          <td>54.4</td>
+          <td>/</td>
+          <td>57.1</td>
+          <td>OpenAI</td>
+          <td></td>
+          <td><a href="#">GPT-3.5模型地址</a></td>
+        </tr>
+        <!-- Add more rows as needed -->
+        <tr>
+            <td>GPT-4</td>
+            <td>1750.0</td>
+            <td>86.4</td>
+            <td>68.7</td>
+            <td>/</td>
+            <td>92.0</td>
+            <td>OpenAI</td>
+            <td></td>
+            <td><a href="#">GPT-4模型地址</a></td>
+          </tr>
+          <tr>
+            <td>Gemini-pro</td>
+            <td>1000.0</td>
+            <td>79.13</td>
+            <td>/</td>
+            <td>/</td>
+            <td>86.5</td>
+            <td>DeepMind</td>
+            <td></td>
+            <td><a href="#">Gemini-pro模型地址</a></td>
+          </tr>
+          <tr>
+            <td>LLaMA2 7B</td>
+            <td>70.0</td>
+            <td>45.3</td>
+            <td>/</td>
+            <td>29.3</td>
+            <td>14.6</td>
+            <td>Facebook AI研究实验室</td>
+            <td></td>
+            <td><a href="#">LLaMA2 7B模型地址</a></td>
+          </tr>
+          <tr>
+            <td>LLaMA2 13B</td>
+            <td>130.0</td>
+            <td>54.84</td>
+            <td>/</td>
+            <td>39.1</td>
+            <td>28.7</td>
+            <td>Facebook AI研究实验室</td>
+            <td></td>
+            <td><a href="#">LLaMA2 13B模型地址</a></td>
+          </tr>
+          <tr>
+            <td>LLaMA2 34B</td>
+            <td>340.0</td>
+            <td>62.6</td>
+            <td>/</td>
+            <td>43.4</td>
+            <td>42.2</td>
+            <td>Facebook AI研究实验室</td>
+            <td></td>
+            <td><a href="#">LLaMA2 34B模型地址</a></td>
+          </tr>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <h3>如果你觉得我的技术需要进步，可以适当的融资一下</h3>
+      <div class="img-container">
+        <img src="./images/payme.jpg" width="500" height="600">
+        <img src="./images/payme_z.jpg" width="500" height="600">
+    </div>
+    </div>
+  </div>
+<!-- </div> -->
+
+<script>
+    var modal = document.getElementById('myModal');
+    var span = document.getElementsByClassName('close')[0];
+
+    span.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    window.onload = function() {
+        modal.style.display = 'block';
+    }
+</script>
+<!-- <script src="https://cdn.tailwindcss.com"></script> -->
+</body>
+</html>

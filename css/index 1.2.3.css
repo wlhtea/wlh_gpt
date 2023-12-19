@@ -1,5 +1,6 @@
 body {
     background-position: center;
+    /* background-color: #f9f5f5; */
     background-image: url('../images/聊天背景.png');
     background-size: cover;
     font-family: Arial, sans-serif;
@@ -19,7 +20,7 @@ body {
     flex: 1;
     overflow-y: auto;
     width: 1000px;
-    max-width: 80%;
+    max-width: 60%;
     margin-top: 10px;
     margin-bottom: 10px;
     display: flex;
@@ -79,7 +80,7 @@ body {
   border-radius: 10px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
   margin-top: 0px; 
-  margin-bottom: px; 
+  margin-bottom: 50px; 
   }
   
   select, button {
@@ -92,7 +93,7 @@ body {
   textarea {
   height: 50px; /* Adjust the height if needed */
   max-height: 200px;
-  font-size: 20px;
+  font-size: 16px;
   border-radius: 5px;
   box-sizing: border-box;
   resize: none;
@@ -102,12 +103,6 @@ body {
   font-family: '楷体', 'KaiTi', cursive;
   }
   
-  /* input:before {
-  content: '\a'; /* 插入换行符 */
-  /* white-space: pre-wrap; 保留空白和换行 */
-  /* visibility: hidden;
-  height: 0; */
-  /* } */ */
   
   select {
   width: 20%;
@@ -205,7 +200,7 @@ body {
   border-color: #65cc52;
   }
 strong {
-  color: #aed9e4; /* 这是一种绿色，你可以根据需要选择其他颜色 */
+  color: #aed9e4;
   font-size: 1.2em; 
 }
     
@@ -288,4 +283,39 @@ ol{
   background-color: #2980b9;
   color: #fff;
   border-color: #2980b9;
+}
+
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 20px;
+  z-index: 999;
+  background-color: #fff; /* 背景颜色可根据需要调整 */
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.menu a {
+  text-decoration: none;
+  color: #333; /* 菜单项文字颜色可根据需要调整 */
+  margin-right: 20px;
+}
+
+.badge {
+  background-color: #e53e3e; /* 徽章背景颜色可根据需要调整 */
+  color: #fff; /* 徽章文字颜色可根据需要调整 */
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-left: 4px;
+}
+
+.badge-warning {
+  background-color: #f6ad55; /* 警告徽章背景颜色可根据需要调整 */
+}
+
+.badge-info {
+  background-color: #4a90e2; /* 信息徽章背景颜色可根据需要调整 */
 }

@@ -13,9 +13,7 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
 def gpt_chat_interface(messages, model):
-    headers = {
-        'Authorization': f'Bearer sk-Uj9OiPP8J76LTMak04bOFQpaWrnahTb29qtVw4GdplMwrRmu'
-    }
+    headers = {}
 
     # Prepare the data for the POST request
     data = {
@@ -23,9 +21,21 @@ def gpt_chat_interface(messages, model):
         'messages': messages,
         'stream': True
     }
-
+    godurl = 'https://api.gptgod.online/v1/chat/completions'
+    ohmyurl = 'https://cfcus02.opapi.win/v1/chat/completions'
+    url = ''
     # Make the POST request and handle the stream
-    with requests.post('https://api.gptgod.online/v1/chat/completions', headers=headers, json=data, stream=True) as response:
+    if model == 'gemini-pro':
+        url = ohmyurl
+        headers = {
+            'Authorization':'Bearer sk-hFZFXBSQ67a4Ecf98c03T3BLbKFJc524a09adf1b4cA58995'
+        }
+    else:
+        url = godurl
+        headers = {
+            'Authorization': f'Bearer sk-Uj9OiPP8J76LTMak04bOFQpaWrnahTb29qtVw4GdplMwrRmu'
+        }
+    with requests.post(url, headers=headers, json=data, stream=True) as response:
         for line in response.iter_lines():
             if line:
                 decoded_line = line.decode('utf-8')
@@ -63,43 +73,30 @@ def chat_sse():
 def read_image_to_base64(image_path):
     try:
         with open(image_path, "rb") as image_file:
-            # 读取图像文件内容
             image_content = image_file.read()
-
-            # 将图像内容转换为base64编码
             base64_encoded = base64.b64encode(image_content).decode('utf-8')
-
-            # 返回base64编码的字符串
             return base64_encoded
 
     except Exception as e:
-        # 处理异常情况，例如文件不存在或不是有效的图像文件
         print(f"读取图像文件时发生错误: {e}")
         return None
 
 def read_word_file(file_path):
     try:
-        # 打开Word文档
         doc = Document(file_path)
-        # 读取文档内容
         content = []
         for paragraph in doc.paragraphs:
             content.append(paragraph.text)
-        # 返回文档内容
         return content
 
     except Exception as e:
-        # 处理异常情况，例如文件不存在或不是有效的Word文档
         print(f"读取Word文件时发生错误: {e}")
         return None
 
 def extract_text_from_pdf(pdf_path):
     pdf_document = None
     try:
-        # 打开PDF文件
         pdf_document = fitz.open(pdf_path)
-
-        # 遍历每一页
         extracted_text = ""
         for page_number in range(pdf_document.page_count):
             page = pdf_document[page_number]
