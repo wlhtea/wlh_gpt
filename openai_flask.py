@@ -28,12 +28,12 @@ def gpt_chat_interface(messages, model):
     if model == 'gemini-pro':
         url = ohmyurl
         headers = {
-            'Authorization':'Bearer sk-hFZFXBSQ67a4Ecf98c03T3BLbKFJc524a09adf1b4cA58995'
+            'Authorization':'Bearer *'
         }
     else:
         url = godurl
         headers = {
-            'Authorization': f'Bearer sk-Uj9OiPP8J76LTMak04bOFQpaWrnahTb29qtVw4GdplMwrRmu'
+            'Authorization': f'Bearer *'
         }
     with requests.post(url, headers=headers, json=data, stream=True) as response:
         for line in response.iter_lines():
