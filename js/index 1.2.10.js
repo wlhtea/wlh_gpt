@@ -97,6 +97,8 @@ function updateChatWindow(content, id) {
         if (element) {
           element.classList.add('mockup-code');
         }
+        MathJax.typeset()
+        chatWindow.scrollTop = chatWindow.scrollHeight;
         hljs.highlightAll();
     } else {
         const userChat = document.createElement('div');
@@ -211,9 +213,9 @@ function handleKeyPress(event) {
 }
 
 
-// var input_values_id = document.getElementById("promptInput");
-// input_values_id.addEventListener('change',handleKeyPress);
-// input_values_id.addEventListener('input',handleKeyPress)
+var input_values_id = document.getElementById("promptInput");
+input_values_id.addEventListener('change',handleKeyPress);
+input_values_id.addEventListener('input',handleKeyPress)
 
 
 var myCheckboxfy = document.getElementById('myCheckboxfy');

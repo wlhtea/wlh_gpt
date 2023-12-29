@@ -12,6 +12,7 @@ import os
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
+free_model_ohmy = ['gemini-pro','gpt-3.5-turbo','gpt-3.5-turbo-16k','gpt-3.5-turbo-instruct','tts-1','dall-e-3','text-embedding-ada-002']
 def gpt_chat_interface(messages, model):
     headers = {}
 
@@ -25,15 +26,16 @@ def gpt_chat_interface(messages, model):
     ohmyurl = 'https://cfcus02.opapi.win/v1/chat/completions'
     url = ''
     # Make the POST request and handle the stream
-    if model == 'gemini-pro':
+
+    if model in free_model_ohmy:
         url = ohmyurl
         headers = {
-            'Authorization':'Bearer *'
+            'Authorization':'Bearer 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'
         }
     else:
         url = godurl
         headers = {
-            'Authorization': f'Bearer *'
+            'Authorization': f'Bearer '
         }
     with requests.post(url, headers=headers, json=data, stream=True) as response:
         for line in response.iter_lines():
