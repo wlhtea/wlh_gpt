@@ -1,42 +1,44 @@
+import time
+
 from werkzeug.utils import secure_filename
 from flask import Flask, request, Response
 from flask import make_response, jsonify
+from mysql.connector import Error
+from python_token_ai import num_tokens_from_messages
 from flask_cors import CORS
-from docx import Document
+import mysql.connector
+import jwt
+import datetime
+import bcrypt
 import requests
-import base64
-import fitz
 import json
 import os
+import dotenv
+import secrets
+
+
+SECRET_KEY = '自己设置一个密钥进行加密'
+dotenv.load_dotenv('.env')
+API_KEY = os.environ.get("OPEN_API_KEY")
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
+app.config['UPLOAD_FOLDER'] = r'./uploads/'  # 设置文件上传的目标文件夹
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 限制文件大小为16MB
 
-free_model_ohmy = ['gemini-pro','gpt-3.5-turbo','gpt-3.5-turbo-16k','gpt-3.5-turbo-instruct','tts-1','dall-e-3','text-embedding-ada-002']
-def gpt_chat_interface(messages, model):
-    headers = {}
-
-    # Prepare the data for the POST request
+def gpt_chat_interface(username,balance,messages, model):
+    print(messages)
+    content_all = ''
     data = {
         'model': model,
         'messages': messages,
         'stream': True
     }
     godurl = 'https://api.gptgod.online/v1/chat/completions'
-    ohmyurl = 'https://cfcus02.opapi.win/v1/chat/completions'
-    url = ''
-    # Make the POST request and handle the stream
-
-    if model in free_model_ohmy:
-        url = ohmyurl
-        headers = {
-            'Authorization':'Bearer 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'
-        }
-    else:
-        url = godurl
-        headers = {
-            'Authorization': f'Bearer '
-        }
+    url = godurl
+    headers = {
+        'Authorization': f'Bearer {API_KEY}'
+    }
     with requests.post(url, headers=headers, json=data, stream=True) as response:
         for line in response.iter_lines():
             if line:
@@ -50,95 +52,199 @@ def gpt_chat_interface(messages, model):
                     content = data_json['choices'][0]['delta'].get('content', '')
                     if content == '':
                         continue
+                    content_all += content
                     yield f'data: {json.dumps(content, ensure_ascii=False)}\n\n'
+
     yield 'data: {"done": true}\n\n'
+    save_chat_data_to_sql(username,balance,messages,content_all,model)
+
+def save_chat_data_to_sql(username, balance, user_question, gpt_answer, model):
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+        user_question.extend([{'role': 'assistant', 'content': gpt_answer}])
+        print(user_question)
+        consume_num = num_tokens_from_messages(user_question, model)
+
+        new_balance = float(balance) - consume_num
+        print(consume_num)
+
+        update_query = "UPDATE users SET balance = %s WHERE username = %s"
+        cursor.execute(update_query, (new_balance, username))
+
+        connection.commit()
+    except mysql.connector.Error as err:
+        print("Error: ", err)
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
 
 @app.route('/chat', methods=['GET', 'POST', 'OPTIONS'])
 def chat_sse():
-    if request.method == 'OPTIONS':
-        response = make_response()
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-        response.headers.add('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
-        return response
-    elif request.method == 'POST' or request.method == 'GET':
-        # Handle the actual SSE request
+    start = time.time()
+    if request.method == 'POST' or request.method == 'GET':
+        cookie = request.args.get('cookie', '')
         messages = request.args.get('messages', '')  # Assuming messages is a JSON-formatted string
         model = request.args.get('model', '')
+        cookie_verify_ = json.loads(verify_cookie(cookie).data)
+
+        success_or_ = cookie_verify_.get('success')
+        balance = cookie_verify_.get('balance')
+        username = cookie_verify_.get('username')
+        print(success_or_,balance,username)
+        if success_or_:
+            if username and float(balance) > 0: #验证balance大于等于0才能扣费
+                # username 进行扣费
+                # 对username进行传递应该是，在对话结束后进行扣费操作并显示在个人明细中
+                pass
+            else:
+                content = f'data: {json.dumps("余额不足", ensure_ascii=False)}\n\n'
+                return Response(content,
+                         content_type='text/event-stream; charset=utf-8',
+                         headers={'Access-Control-Allow-Origin': '*'})
+
+        else:
+            content = f'data: {json.dumps("请登录账号", ensure_ascii=False)}\n\n'
+            return Response(content,
+                     content_type='text/event-stream; charset=utf-8',
+                     headers={'Access-Control-Allow-Origin': '*'})
+
+        end = time.time()
+        print("time:",end-start)
         conversationHistory = json.loads(messages)
-        return Response(gpt_chat_interface(conversationHistory, model), content_type='text/event-stream; charset=utf-8',
+        return Response(gpt_chat_interface(username,balance,conversationHistory, model), content_type='text/event-stream; charset=utf-8',
                         headers={'Access-Control-Allow-Origin': '*'})
     else:
         # Handle other cases
         return jsonify({"error": "Method Not Allowed", "message": "Use POST or GET method for this endpoint"}), 405
 
-def read_image_to_base64(image_path):
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return '没有文件部分', 400
+    file = request.files['file']
+    if file.filename == '':
+        return '没有选择文件', 400
+    file_ext = os.path.splitext(file.filename)[1].lower()
+    forbidden_extensions = ['.exe', '.bat', '.sh', '.js', '.php', '.py', '.rb', '.pl']
+    if file_ext in forbidden_extensions:
+        return f'文件类型 {file_ext} 不被允许上传', 400
+    filename = secure_filename(file.filename)
+    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(path)
+    file_url = send_file_to_get_ID(path)
+    return file_url
+
+def send_file_to_get_ID(file_path):
+    url = "http://api.gptgod.online/v1/file"
+    headers = {
+        'Authorization': f'Bearer {API_KEY}'
+    }
+    files = {'file': (file_path, open(file_path, 'rb'))}
+    response = requests.post(url, headers=headers, files=files)
+    data = response.json()
+    return data.get("data", {}).get("url")
+
+# 数据库配置
+db_config = {
+    'user': 'root',
+    'password': '12345678',
+    'host': 'localhost',
+    'database': 'wsql',
+    'autocommit' : False
+}
+# 连接数据库
+
+@app.route('/verify_user', methods=['POST'])
+def verify_user():
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor()
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+
     try:
-        with open(image_path, "rb") as image_file:
-            image_content = image_file.read()
-            base64_encoded = base64.b64encode(image_content).decode('utf-8')
-            return base64_encoded
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
 
-    except Exception as e:
-        print(f"读取图像文件时发生错误: {e}")
-        return None
+        cursor.execute("SELECT user_id, balance FROM users WHERE username = %s AND password = %s", (username, password))
+        result = cursor.fetchone()
 
-def read_word_file(file_path):
-    try:
-        doc = Document(file_path)
-        content = []
-        for paragraph in doc.paragraphs:
-            content.append(paragraph.text)
-        return content
+        if result:
+            user_id, balance = result
+            token = jwt.encode({
+                'user': username,
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+            }, SECRET_KEY, algorithm="HS256")
 
-    except Exception as e:
-        print(f"读取Word文件时发生错误: {e}")
-        return None
+            try:
+                cursor.execute("INSERT INTO user_cookie (user_id, CookieData, ExpiryDate) VALUES (%s, %s, %s)",
+                               (user_id, token, datetime.datetime.utcnow() + datetime.timedelta(hours=24)))
+                connection.commit()
+            except Error as e:
+                print("插入cookie表时出错：", e)
+                return jsonify({'success': False, 'error': str(e)}), 500
+            return jsonify({'success': True, 'balance': balance, 'token': token})
+        else:
+            return jsonify({'success': False, 'message': 'Invalid credentials'})
 
-def extract_text_from_pdf(pdf_path):
-    pdf_document = None
-    try:
-        pdf_document = fitz.open(pdf_path)
-        extracted_text = ""
-        for page_number in range(pdf_document.page_count):
-            page = pdf_document[page_number]
-            # 提取文本
-            text = page.get_text()
-            # 拼接提取到的文本
-            extracted_text += f"Page {page_number + 1}:\n{text}\n{'=' * 30}\n"
-        return extracted_text
-
-    except Exception as e:
-        return f"Error: {e}"
+    except Error as e:
+        print("数据库连接或查询时出错：", e)
+        return jsonify({'success': False, 'error': str(e)}), 500
 
     finally:
-        if pdf_document:
-            pdf_document.close()
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
 
-def handle_file(file_path):
-    print(file_path.lower())
-    if file_path.lower().endswith('.pdf'):
-        return extract_text_from_pdf(file_path)
-    elif file_path.lower().endswith(('.doc', '.docx')):
-        return read_word_file(file_path)
-    elif file_path.lower().endswith(('png', 'jpg', 'jpeg', 'gif')):
-        return read_image_to_base64(file_path)
-    else:
-        return '不支持的文件类型'
-
-@app.route('/extract_text', methods=['POST'])
-def extract_text():
+def verify_cookie(cookie_user):
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor()
     try:
-        file = request.files['file']
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(r"./pdf", filename)
-        file.save(file_path)
-        extracted_text = handle_file(file_path)
-        print(f'这是{filename}文件内容:',str(extracted_text))
-        return jsonify({'result': f'这是{filename}文件内容:'+str(extracted_text)})
+        # 在 user_cookie 表中验证 token 并获取 user_id
+        cursor.execute("SELECT user_id, ExpiryDate FROM user_cookie WHERE CookieData = %s", (cookie_user,))
+        cookie_record = cursor.fetchone()
 
-    except Exception as e:
-        return jsonify({'error': str(e)})
+        if cookie_record:
+            user_id, expiry_date = cookie_record
+
+            # 验证 token 是否过期
+            if expiry_date > datetime.datetime.now():
+                # 使用 user_id 从 users 表中获取 username 和 balance
+                cursor.execute("SELECT username, balance FROM users WHERE user_id = %s", (user_id,))
+                user_record = cursor.fetchone()
+                if user_record:
+                    username, balance = user_record
+                    return jsonify({'success': True, 'username': username, 'balance': balance})
+                else:
+                    return jsonify({'success': False, 'message': 'User not found'})
+            else:
+                return jsonify({'success': False, 'message': 'Token expired'})
+
+        return jsonify({'success': False, 'message': 'Invalid token'})
+
+    except Error as e:
+        print("数据库连接或查询时出错：", e)
+        return jsonify({'success': False, 'message': str(e)})
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
+# 用于验证用户的路由
+@app.route('/verify_token', methods=['POST'])
+def verify_token():
+    data = request.json
+    token = data.get('token')
+    return_username_and_balance = verify_cookie(token)
+    return return_username_and_balance
+
+
+
+
+
 
 if __name__ == '__main__':
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     app.run(host='0.0.0.0',debug=True, port=5000)

@@ -8,25 +8,78 @@
   <meta http-equiv="Expires" content="0" />
   <title>W-GPT</title>
   <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
-  <link href="css/all 1.2.1.css" rel="stylesheet" type="text/css" />
-  <!-- 代码渲染 -->
+  <link href="css/all 1.2.3.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="./highlight.js/styles/a11y-dark.css">
-  <!-- <script src="https://unpkg.com/@highlightjs/cdn-assets@11.6.0/highlight.min.js"></script> -->
-  <!-- 数学公式渲染 -->
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <script src="https://polyfill.io/v3/polyfill.min.js"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-  <ul class="menu bg-base-200 w-56">
-    <li><a href="./index.html">home</a></li>
-    <li><a class="active">chat</a></li>
-    <li><a href="./readme.html">readme</a></li>
-  </ul>
-  <div id="conversationContainer"></div>
+  <div class="drawer">
+    <input id="my-drawer" type="checkbox" class="drawer-toggle"/>
+    <div class="drawer-side" id="drawer-side-id">
+      <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+      <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+          <li><a href="https://openai.w-l-h.xyz" style='color : none;text-decoration: none;'><button class="btn btn-wide btn-neutral">密钥获取</button></a></li>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">用户名</span>
+            </label>
+            <input type="email" id="username" placeholder="用户名" class="input input-bordered" required />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">密码</span>
+            </label>
+            <input type="password" id="password" placeholder="password" class="input input-bordered" required />
+            <label class="label">
+              <a onclick="my_modal_3.showModal()" class="label-text-alt link link-hover" style="color: black;text-decoration: none;">忘记密码</a>
+              <a href="#" class="label-text-alt link link-hover" style="color: black;text-decoration: none;">注册</span>
+            </label>
+          </div>
+          <li><a><button class="btn btn-wide" id="submit">提交</button></a></li>
+          <!-- <li style="width: 50%;"><a><button class="btn btn-wide btn-active btn-neutral" onclick="my_modal_3.showModal()">注册</button></a></li> -->
+      </ul>
+  </div>
+  
+<dialog id="my_modal_3" class="modal">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg">Hello!</h3>
+    <p class="py-4">Press ESC key or click on ✕ button to close</p>
+  </div>
+</dialog>
+
+  </div>
+  <div id="icon" style="z-index: 1002;" class="circle-icon"></div>
+  <label for="my-drawer" id="myLabel" style="display: none;">Open drawer</label>
+  <div class="dropdown dropdown-right" style="margin-top: 5px;background: transparent;">
+    <div tabindex="0" role="button" class="btn m-1" id="modelSelect" value = "gpt-3.5-turbo">gpt-3.5-turbo    
+  </div>
+    <ul tabindex="0" id="xlsx_" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52" style="width: 250px;display: none;">
+      <li><a value="gpt-3.5-turbo">gpt-3.5-turbo</a></li>
+      <li><a value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</a></li>
+      <li><a value="gpt-4">gpt-4</a></li>
+      <li><a value="gpt-4-32k">gpt-4-32k</a></li>
+      <li><a value="gpt-4-all">gpt-4-all（可传文档）</a></li>
+      <li><a value="gemini-pro">gemini-pro</a></li>
+      <li><a value="gpt-4-gizmo-g-HMNcP6w7d">数据分析（可传文档）</a></li>
+      <li><a value="gpt-4-gizmo-g-AslD5cRjz">信工学院周报生成器</a></li>
+    </ul>
+  </div>
+  <label class="swap swap-flip text-xxl">
+    <input type="checkbox" id="checkbox_buttom"/>
+    <div class="swap-on" style="font-size: xx-large;">😈</div>
+    <div class="swap-off" style="font-size: xx-large;">😇</div>
+  </label>
+  <div class="toast-container" id="toastContainer"></div>
+  <div id="conversationContainer">
+  </div>
 
   <div id='add_contribute' class="form-control">
-    <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt" class="file-input file-input-bordered file-input-sm w-full max-w-xs" onchange="handleFileUpload(event)" />
-    <!-- <button id="uploadButton" class="btn" style="margin-left: 10px;">上传文件</button> -->
+    <input type="file" id="fileInput" multiple class="file-input file-input-bordered file-input-sm w-full max-w-xs" style="display: none;" onchange="uploadFile()" />
     <label class="cursor-pointer label">
       <span id = "text-online" class="label-text">online&nbsp;</span>
       <input type="checkbox" id="myCheckbox" class="checkbox checkbox-success" />
@@ -35,44 +88,17 @@
     </label>
   </div>
   <div id="inputContainer">
-    <textarea type="text" id="promptInput" placeholder="暂时关闭图像生成 考四级后再搞" onkeypress="handleKeyPress(event)"></textarea>
-    <select id="modelSelect">
-      <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-      <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
-      <option value="gpt-4">gpt-4</option>
-      <option value="gemini-pro">gemini-pro</option>
-      <!-- <option value="gpt-4-v">gpt-4-v</option> -->
-      <!-- <option value="gpt-4-dalle">gpt-4-dalle</option> -->
-      <!-- <option value="gpt-4-all">gpt-4-all</option> -->
-      <option value="gpt-4-32k">gpt-4-32k</option>
-      <option value="code-llama-34b">code-llama-34b</option>
-      <option value="code-llama-13b">code-llama-13b</option>
-      <option value="llama-2-70b">llama-2-70b</option>
-      <option value="llama-2-13b">llama-2-13b</option>
-      <!-- <option value="dall-e-3">dall-e-3</option> -->
-    </select>
-    <button type="submit" onclick="handleKeyPress(event)" class="btn glass">发送</button>
-  </div>
-  <!-- <div class="stats glass text-primary-content" style="position: fixed; top: 10px; right: 50px;">
-    <div class="stat">
-      <div class="stat-title">coffee bill</div>
-      <div class="stat-value">$0</div>
-      <div class="stat-actions">
-        <button class="btn btn-sm btn-success px-16" onclick="window.location.href='./paycoffee.html'">pay</button>
-      </div>
+    <div class="tooltip" data-tip="上传文档">
+      <button id="uploadIcon" class="btn btn-outline btn-secondary" style="display: none;left: 0px;width: auto; margin-right: 3px;">🧙‍♂️</button>
     </div>
-  </div> -->
-  <div class="toast-container" id="toastContainer"></div>
+    <textarea type="text" id="promptInput" placeholder="Shift+Enter换行" onkeypress="handleKeyPress(event)" style="font-weight: bold;border: 2px solid black;" rows="1"></textarea>
+    <button type="submit" onclick="handleKeyPress(event)" class="btn btn-outline">发送</button>
+  </div>
+
   
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-  <!-- <script type="text/javascript" src="./highlight.js/es/common.js"></script> -->
   <script type="text/javascript" src="./marked/marked.min.js"></script>
-  <script type="text/javascript" src="js/index 1.2.10.js"></script>
+  <script type="text/javascript" src="js/index 1.3.4.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/highlight.min.js"></script>
-  <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async
-          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script> -->
 </body>
 </html>

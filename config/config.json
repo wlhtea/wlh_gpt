@@ -1,0 +1,7 @@
+{
+    "apikeys": [
+        "api1",
+        "api2"
+    ],
+    "baseurl": "https://w-l-h.xyz/v1/chat/completions"
+}

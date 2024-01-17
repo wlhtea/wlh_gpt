@@ -1,6 +1,6 @@
 body {
   background-position: center;
-  background-color: #c3c0ca;
+  background-color: #e5e5e5cb;
   /* background-image: url('../images/background.png'); */
   background-size: cover;
   font-family: Arial, sans-serif;
@@ -20,7 +20,7 @@ body {
   flex: 1;
   overflow-y: auto;
   width: 1000px;
-  max-width: 60%;
+  max-width: 90%;
   margin-top: 10px;
   margin-bottom: 0px;
   display: flex;
@@ -28,22 +28,22 @@ body {
   overflow-x: hidden;
   font-size: 16px;
 }
-
 /* .chat {
 display: flex;
 margin-bottom: 10px;
-}
+} */
 
 .chat-bubble {
-padding: 10px;
-border-radius: 5px;
-overflow-wrap: break-word;
-animation: fadeIn 0.5s ease-in-out;
+  line-height:1.8;
+  /* padding: 10px; */
+  /* border-radius: 5px; */
+  overflow-wrap: break-word;
+  /* animation: fadeIn 0.5s ease-in-out; */
 }
 
 .chat-start {
-justify-content: flex-start;
-} */
+  justify-content: flex-start;
+}
 
 pre {
 margin-top: 0px; /* 设置段落顶部的外边距 */
@@ -96,12 +96,13 @@ select, button {
 textarea {
   height: 50px; /* Adjust the height if needed */
   max-height: 200px;
+  margin-right: 5px;
   font-size: 16px;
   border-radius: 5px;
   box-sizing: border-box;
   resize: none;
   overflow: hidden;
-  width: 50%;
+  width: 75%;
   padding: 8px;
   font-family: '楷体', 'KaiTi', cursive;
   font-size:19px;
@@ -142,27 +143,42 @@ to {
 }
 
 .toast-container {
-position: fixed;
-top: 10px;
-left: 10px;
-right: 20px;
-max-width: 300px;
-z-index: 1000;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  right: 20px;
+  max-width: 300px;
+  /* z-index: 1000; */
 }
 .toast {
-opacity: 0;
-transition: opacity 0.5s ease-in-out;
-background-color: #333;
-color: #fff;
-padding: 10px;
-border-radius: 5px;
-margin-bottom: 10px;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  right: 20px;
+  max-width: 300px;
+  opacity: 0;
+  transition: opacity 10s ease-in-out;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .alert-success {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  right: 20px;
+  max-width: 300px;
   background-color: #28a745;
 }
 .alert-info {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  right: 20px;
+  max-width: 300px;
   background-color: #17a2b8;
 }
 
@@ -190,35 +206,35 @@ margin-bottom: 10px;
 }
 
 .checkbox {
-appearance: none;
-width: 20px;
-height: 20px;
-border: 2px solid rgba(0, 0, 0, 0.3);
-border-radius: 4px;
-background-color: #ffffff;
-cursor: pointer;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  background-color: #ffffff;
+  cursor: pointer;
 }
 
 .checkbox:checked {
-background-color: #65cc52;
-border-color: #65cc52;
+  background-color: #65cc52;
+  border-color: #65cc52;
 }
 strong {
-color: #aed9e4;
-/* font-size: 1.2em;  */
+  color: #aed9e4;
+  /* font-size: 1.2em;  */
 }
   
 body {
-font-family: Arial, sans-serif; 
-line-height: 1.4; 
+  font-family: Arial, sans-serif; 
+  line-height: 1.5; 
 }
 p{
   margin-top: 5px; 
   margin-bottom: 5px; 
 }
 code{
-  margin-top: 5px; 
-  margin-bottom: 5px; 
+  margin-top: 15px; 
+  margin-bottom: 15px; 
 }
 ul {
   margin-top: 1px; 
@@ -329,3 +345,30 @@ background-color: #f6ad55; /* 警告徽章背景颜色可根据需要调整 */
 background-color: #4a90e2; /* 信息徽章背景颜色可根据需要调整 */
 }
 
+.swap {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.circle-icon {
+  position: fixed;
+  left: 7%;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  background-image: url('../images/favicon.ico');
+  background-size: cover; 
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

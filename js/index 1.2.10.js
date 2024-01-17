@@ -9,8 +9,9 @@ let conversationHistory = [{'role': 'system', 'content': '你是一个无所不�
 var exist_pdf = '';
 var count = 0;
 let center_to_out = ''
-var url_base = 'http://8.138.104.244';
+// var url_base = 'http://8.138.104.244';
 // var url_base = 'http://127.0.0.1'
+var url_base = 'https://api.w-l-h.xyz'
 const chatBubbleClasses = [
     "chat-bubble-secondary",
     "chat-bubble-primary",
@@ -27,38 +28,41 @@ const options = {
     // smartLists: true
   };
 
-function uploadPDF() {
-    var pdfInput = document.getElementById('fileInput');
-    var file = pdfInput.files[0];
-    if (!file) {
+  function uploadFile() {
+    var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files[0];
+    const fileExt = file.name.split('.').pop().toLowerCase();
+
+    // 不允许的文件扩展名列表
+    const forbiddenExtensions = ['exe', 'bat', 'sh', 'js', 'php', 'py', 'rb', 'pl'];
+
+    // 检查文件扩展名是否在禁止列表中
+    if (forbiddenExtensions.includes(fileExt)) {
+        alert(`文件类型 .${fileExt} 不被允许上传`);
+        fileInput.value = ''; 
         return;
     }
     var formData = new FormData();
     formData.append('file', file);
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', `${url_base}:5000/extract_text`);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            conversationHistory.push({ role: 'user', content: response.result});
-        } else {
-            showAlert(false,`上传失败${error}`);
-        }
-    };
-    xhr.onerror = function () {
-        console.error('请求出错');
-    };
-    xhr.send(formData);
-}
+    var contributeDiv = document.getElementById('add_contribute');
+    var originalContent = contributeDiv.innerHTML; // 保存原始内容
+    contributeDiv.innerHTML = '<span class="loading loading-infinity loading-lg"></span>';
 
-// async function handleUpload() {
-//     try {
-//         const response = await uploadPDF();
-//         console.log('成功！服务器响应：', response);
-//     } catch (error) {
-//         console.error('上传失败：', error);
-//     }
-// }
+    fetch(`${url_base}/upload`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+        conversationHistory.push({ role: 'user', content: `这是上传的文档链接${data}`});
+        contributeDiv.innerHTML = originalContent;
+    })
+    .catch(error => {
+        console.error('上传出错:', error);
+        contributeDiv.innerHTML = originalContent;
+    });
+}
 
 
 function showAlert(isSuccess, message) {
@@ -103,7 +107,7 @@ function updateChatWindow(content, id) {
     } else {
         const userChat = document.createElement('div');
         userChat.classList.add('chat', 'chat-end');
-        userChat.innerHTML = `<div class="chat-bubble" id=${count}><strong>AI:</strong>${center_to_out}</div>`;
+        userChat.innerHTML = `<div class="chat-bubble" id=${count}><strong>AI:</strong><pre>${center_to_out}<pre></div>`;
         const conversationContainer = document.getElementById('conversationContainer');
         conversationContainer.appendChild(userChat);
     }
@@ -147,7 +151,7 @@ async function makeOpenAIRequest(model, messages) {
         const encodedMessages = encodeURIComponent(JSON.stringify(messages));
         const encodedModel = encodeURIComponent(model);
 
-        const eventSource = new EventSource(`${url_base}:5000/chat?messages=${encodedMessages}&model=${encodedModel}`);
+        const eventSource = new EventSource(`${url_base}/chat?messages=${encodedMessages}&model=${encodedModel}`);
         eventSource.addEventListener('message', function(event) {
             const content = event.data;
             if (content === '{"done": true}') {
@@ -189,7 +193,7 @@ function handleKeyPress(event) {
         event.preventDefault();
         hljs.highlightAll();
         const modelSelect = document.getElementById('modelSelect');
-        const selectedModel = modelSelect.value;
+        const selectedModel = modelSelect.innerText;
         const promptInput = document.getElementById('promptInput');
         const userPrompt = promptInput.value.trim();
         if (userPrompt === '') {
@@ -209,7 +213,7 @@ function handleKeyPress(event) {
     }
     var input_values_id = document.getElementById("promptInput");
     input_values_id.style.height = 'auto';
-    input_values_id.style.height = `${input_values_id.scrollHeight-16}px`;
+    input_values_id.style.height = `${input_values_id.scrollHeight-20}px`;
 }
 
 
@@ -247,8 +251,69 @@ function handleFileUpload(event) {
     // 检查是否有文件上传
     if (uploadedFile) {
         if (displayFileName() != exist_pdf){
-            uploadPDF();
+            isRequestInProgress = true;
+            uploadFile();
+            isRequestInProgress = false;
             exist_pdf = displayFileName();
         }
     }
   }
+
+function upfile_(selectedModel){
+    fileInput = document.getElementById('uploadIcon');
+    if (selectedModel === 'gpt-4-all（可传文档）' || selectedModel === '数据分析（可传文档）' || selectedModel === '信工学院周报生成器') {
+        fileInput.style.display = 'block';
+        showAlert(true,'点击🧙‍♂️可以上传文档')
+    } else {
+        fileInput.style.display = 'none';
+    }
+};
+
+document.getElementById('uploadIcon').addEventListener('click', function() {
+    document.getElementById('fileInput').click();
+});
+
+
+let model_ = document.getElementById('modelSelect');
+let dropdownItems = document.querySelectorAll('.dropdown-content a');
+
+dropdownItems.forEach(function(item) {
+  item.addEventListener('click', function() {
+    upfile_(this.textContent);
+    model_.textContent = this.textContent;
+    ul_xlsx = document.getElementById('xlsx_');
+    ul_xlsx.style.display = 'none';
+  });
+});
+
+document.getElementById('modelSelect').addEventListener('click',function(){
+    ul_xlsx = document.getElementById('xlsx_');
+    ul_xlsx.style.display = 'block';
+})
+
+function toggleBackground() {
+    var checkbox = document.getElementById('checkbox_buttom');
+    var body = document.querySelector('body');
+    if (checkbox.checked) {
+        // 显示😈，改变为恶魔颜色
+        body.style.backgroundColor = '#3e4245';  // 这里使用红色作为恶魔颜色
+    } else {
+        // 显示😇，改变为天使颜色
+        body.style.backgroundColor = '#e5e5e5cb';
+    }
+}
+
+document.getElementById('icon').addEventListener('click', function() {
+    document.getElementById('myLabel').click();
+    this.style.animation = 'rotate 1s linear';
+    document.getElementById('icon').addEventListener('animationend', function() {
+        this.style.animation = '';
+    });
+});
+
+document.getElementById('checkbox_buttom').addEventListener('click', (event) => {
+    document.getElementById('checkbox_buttom').addEventListener('animationend', function() {
+        this.style.animation = '';
+    });
+    toggleBackground();
+});

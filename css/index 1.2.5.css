@@ -1,0 +1,400 @@
+body {
+  background-position: center;
+  background-color: #e5e5e5cb;
+  /* background-color: #3e4245; */
+  /* background-image: url('../images/background.png'); */
+  background-size: cover;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  scrollbar-width: thin;
+  scrollbar-color: #6e4747 #955959;
+  overflow-x: hidden;
+}
+
+#conversationContainer {
+  flex: 1;
+  overflow-y: auto;
+  width: 1000px;
+  max-width: 90%;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  font-size: 16px;
+}
+/* .chat {
+display: flex;
+margin-bottom: 10px;
+} */
+
+.chat-bubble {
+  line-height:1.8;
+  /* padding: 10px; */
+  /* border-radius: 5px; */
+  overflow-wrap: break-word;
+  /* animation: fadeIn 0.5s ease-in-out; */
+}
+
+.chat-start {
+justify-content: flex-start;
+}
+
+pre {
+margin-top: 0px; /* 设置段落顶部的外边距 */
+margin-bottom: 0px; /* 设置段落底部的外边距 */
+word-wrap: break-word;
+white-space: pre-wrap;
+}
+
+/* .chat-end {
+justify-content: flex-end;
+white-space: pre-line;
+}
+
+.chat-bubble{
+white-space: pre-line;
+} */
+
+.loading-button {
+width: 25%;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+
+
+#inputContainer {
+  width: 100%;
+  max-width: 800px;
+  margin: 40px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 12px; /* Adjusted padding for increased spacing */
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  margin-top: 0px; 
+  margin-bottom: 50px; 
+}
+
+select{
+  height: 45px;
+  font-size: 16px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: auto; /* Adjust the height if needed */
+  max-height: 200px;
+  margin-right: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  resize: none;
+  overflow: hidden;
+  width: 75%;
+  padding: 8px;
+  font-family: '楷体', 'KaiTi', cursive;
+  min-height: 44px;
+}
+
+
+select {
+  width: 20%;
+}
+
+body {
+  font-family: Arial, sans-serif; /* 设置字体 */
+  line-height: 1.0; /* 设置行间距 */
+}
+
+button {
+  width: 25%;
+  padding: 10px;
+  font-family: '楷体', 'KaiTi', cursive;
+  cursor: pointer;
+}
+
+.alert-top {
+position: fixed;
+top: 20px;
+left: 50%;
+transform: translateX(-50%);
+z-index: 1000;
+}
+
+@keyframes fadeOut {
+from {
+    opacity: 1;
+}
+to {
+    opacity: 0;
+}
+}
+
+.toast-container {
+position: fixed;
+top: 10px;
+left: 10px;
+right: 20px;
+max-width: 300px;
+z-index: 1000;
+}
+.toast {
+  text-align: center;
+  left: 50%;
+  top:10%;
+  transform: translate(-50%, -50%);
+  position: fixed;
+  max-height: 50px;
+  max-width: 300px;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.alert-success {
+  background-color: #28a745;
+}
+.alert-info {
+  background-color: #17a2b8;
+}
+
+.fade-out {
+  animation: fadeOut 2s ease-out 1s forwards;
+}
+
+
+/* .form-control {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  padding: 10px;
+} */
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* .label-text {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: aliceblue;
+} */
+
+.checkbox {
+appearance: none;
+width: 20px;
+height: 20px;
+border: 2px solid rgba(0, 0, 0, 0.3);
+border-radius: 4px;
+background-color: #ffffff;
+cursor: pointer;
+}
+
+.checkbox:checked {
+background-color: #65cc52;
+border-color: #65cc52;
+}
+strong {
+color: #aed9e4;
+/* font-size: 1.2em;  */
+}
+  
+body {
+font-family: Arial, sans-serif; 
+line-height: 1.5; 
+}
+p{
+  margin-top: 5px; 
+  margin-bottom: 5px; 
+}
+code{
+  margin-top: 15px; 
+  margin-bottom: 15px; 
+}
+ul {
+  margin-top: 1px; 
+  margin-bottom: 2px; 
+}
+li{
+  margin-top: 0px; 
+  margin-bottom: 0px; 
+}
+ol{
+margin-top: 0px; 
+margin-bottom: 1px; 
+padding-bottom: 0px;
+padding-top:0px;
+}
+
+/* .div{
+  line-height:10px;
+} */
+
+/* // 美化滚动条 */ 
+::-webkit-scrollbar {
+width: 10px;
+height: 10px;
+}
+
+::-webkit-scrollbar-track {
+width: 6px;
+background: rgba(#101F1C, 0.1);
+-webkit-border-radius: 2em;
+-moz-border-radius: 2em;
+border-radius: 2em;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 141, 222, 0.5);
+  background-clip: padding-box;
+  min-height: 28px;
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius: 2em;
+  transition: background-color .3s;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(56, 140, 177, 0.3);
+}
+
+/* 通过ID选择器为按钮应用样式 */
+#uploadButton {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid #3498db; /* 边框颜色 */
+  color: #3498db; /* 文字颜色 */
+  background-color: #fff; /* 背景颜色 */
+  border-radius: 5px; /* 圆角 */
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* 过渡效果 */
+}
+
+/* 鼠标悬停时的样式 */
+#uploadButton:hover {
+  background-color: #3498db;
+  color: #fff;
+  border-color: #fff;
+}
+
+/* 激活（点击）时的样式 */
+#uploadButton:active {
+  background-color: #2980b9;
+  color: #fff;
+  border-color: #2980b9;
+}
+
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 20px;
+  z-index: 999;
+  background-color: #fff; /* 背景颜色可根据需要调整 */
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.menu a {
+text-decoration: none;
+color: #333; /* 菜单项文字颜色可根据需要调整 */
+margin-right: 20px;
+}
+
+.badge {
+background-color: #e53e3e; /* 徽章背景颜色可根据需要调整 */
+color: #fff; /* 徽章文字颜色可根据需要调整 */
+border-radius: 4px;
+padding: 2px 6px;
+margin-left: 4px;
+}
+
+.badge-warning {
+background-color: #f6ad55; /* 警告徽章背景颜色可根据需要调整 */
+}
+
+.badge-info {
+background-color: #4a90e2; /* 信息徽章背景颜色可根据需要调整 */
+}
+
+.swap {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.circle-icon {
+  position: fixed;
+  left: 7%;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  background-image: url('../images/favicon.ico');
+  background-size: cover; 
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+a[href] {
+  color: blue;      /* 设置字体颜色为蓝色 */
+  text-decoration: underline;  /* 添加下划线 */
+}
+
+
+#drawer-side-id {
+  z-index: 1001;
+}
+
+#conversationContainer {
+  z-index: 999;
+}
+.dropdown{
+  z-index: 1000;
+}
+.drawer-side{
+  z-index: 1001;
+}
+
+.cursor-pointer{
+  font-size: x-large;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 3px;
+  background-color: azure;
+}
