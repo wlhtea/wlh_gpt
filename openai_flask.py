@@ -17,9 +17,10 @@ import dotenv
 import secrets
 
 
-SECRET_KEY = '自己设置一个密钥进行加密'
+SECRET_KEY = 'saqW8vI1J9h3bKPWAkKq'
 dotenv.load_dotenv('.env')
 API_KEY = os.environ.get("OPEN_API_KEY")
+openai_base_url = os.environ.get("openai_base_url")
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -34,8 +35,7 @@ def gpt_chat_interface(username,balance,messages, model):
         'messages': messages,
         'stream': True
     }
-    godurl = 'https://api.gptgod.online/v1/chat/completions'
-    url = godurl
+    url = openai_base_url
     headers = {
         'Authorization': f'Bearer {API_KEY}'
     }
@@ -133,18 +133,12 @@ def upload_file():
     filename = secure_filename(file.filename)
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(path)
-    file_url = send_file_to_get_ID(path)
+    file_url = send_file_to_get_ID(filename)
     return file_url
 
-def send_file_to_get_ID(file_path):
-    url = "http://api.gptgod.online/v1/file"
-    headers = {
-        'Authorization': f'Bearer {API_KEY}'
-    }
-    files = {'file': (file_path, open(file_path, 'rb'))}
-    response = requests.post(url, headers=headers, files=files)
-    data = response.json()
-    return data.get("data", {}).get("url")
+def send_file_to_get_ID(filename):
+    url = f'后端域名/uploads/{filename}'
+    return url
 
 # 数据库配置
 db_config = {
