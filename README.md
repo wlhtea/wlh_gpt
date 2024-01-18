@@ -5,7 +5,7 @@
 WGPT（Web-based GPT）是一个综合性的网页应用，旨在通过集成多种GPT模型，为用户提供全面的办公、学习和数据分析解决方案。该项目不仅包括多样化的GPT模型应用，还计划纳入GLM4模型，以提高语言处理的效率和准确性。
 
 ## 网站效果演示
-![效果演示](https://github.com/wlhtea/wlh_gpt/assets/115779315/8ef911a7-af13-4af6-b155-fe47331c0a8c)
+[效果演示](https://github.com/wlhtea/wlh_gpt/assets/115779315/8ef911a7-af13-4af6-b155-fe47331c0a8c)
 
 ## 数据库关系图和部分字段解释
 
