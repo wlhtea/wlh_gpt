@@ -78,6 +78,9 @@ openai_base_url=https://openai.api.com/v1/chat/completions
 - 获取到apikey，填入.env文件中
 - openai_base_url = https//opeani.w-l-h.xyz/v1/chat/completions
 
+**文件传输出现问题**
+需要服务器才可使用,详见openai_flask.py中send_file_to_get_ID()
+
 ## 启动后台
 
 ```sh
