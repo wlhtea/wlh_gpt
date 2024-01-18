@@ -60,6 +60,24 @@ python init_sql.py
 pip install -r requirements.txt
 ```
 
+## 创建.env环境文件
+在openai_flask.py同目录下创建一个名字为.env的文件，内容如下
+```sh
+OPEN_API_KEY=
+openai_base_url=https://openai.api.com/v1/chat/completions
+```
+
+## 解决各种国内无梯无key的方法：
+**如果你在国内有openai的apikey但是没有梯子**
+- 可以使用我的反向代理网址https://w-l-h.xyz
+- openai_base_url = https://w-l-h.xyz/v1/chat/completions
+- key就是你在官网的key即可
+
+**如果你没有apikey也没有梯子**
+- 可以到[我的apikey池中获取](https:openai.w-l-h.xyz)，新用户默认10美金，倍率与openai一致，支持所有openai模型。
+- 获取到apikey，填入.env文件中
+- openai_base_url = https//opeani.w-l-h.xyz/v1/chat/completions
+
 ## 启动后台
 
 ```sh
